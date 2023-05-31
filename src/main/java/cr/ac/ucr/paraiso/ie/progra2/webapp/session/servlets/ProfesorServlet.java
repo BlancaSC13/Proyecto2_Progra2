@@ -55,7 +55,7 @@ public class ProfesorServlet extends HttpServlet {
                     out.println("</tr>");
                 });
                 out.println("</table>");
-                out.println("        <p><a href=\"/session-webapp/index.html\">Menu</a></p>");
+                out.println("        <p><a href=\"/session-webapp/admin.html\">Menu</a></p>");
             }else{
                 out.println("        <h1>Debe hacer login para ver los profesores!</h1>");
                 out.println("        <p><a href=\"/session-webapp/login.html\">Login</a></p>");

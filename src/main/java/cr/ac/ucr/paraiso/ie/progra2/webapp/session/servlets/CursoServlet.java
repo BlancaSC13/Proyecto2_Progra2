@@ -8,10 +8,7 @@ import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.CursoService;
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.CursoServiceImp;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,7 +21,7 @@ public class CursoServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         CursoService service = new CursoServiceImp();
         List<Curso> cursos = service.listar();
-
+        HttpSession session = req.getSession();
         SessionService getSession = new SessionServiceImp();
         Optional<String> sessionOptional = getSession.getUser(req);
 
@@ -56,7 +53,11 @@ public class CursoServlet extends HttpServlet {
                     out.println("</tr>");
                 });
                 out.println("</table>");
-                out.println("        <p><a href=\"/session-webapp/index.html\">Menu</a></p>");
+                if (session.getAttribute("role").equals("Admin")) {
+                    out.println("        <p><a href=\"/session-webapp/admin.html\">Menu</a></p>");
+                }else{
+                    out.println("        <p><a href=\"/session-webapp/index.html\">Menu</a></p>");
+                }
             }else{
                 out.println("        <h1>Debe hacer login para ver los cursos!</h1>");
                 out.println("        <p><a href=\"/session-webapp/login.html\">Login</a></p>");

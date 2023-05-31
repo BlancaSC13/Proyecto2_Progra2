@@ -14,12 +14,13 @@ import java.util.Optional;
 public class LoginServlet extends HttpServlet {
     final static String USERNAME = "C27403";
     final static String PASSWORD = "12345";
-    final static String ROLE = "1";
+    final static String ROLE = "Admin";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         SessionService getSession = new SessionServiceImp();
         Optional<String> sessionOptional = getSession.getUser(req);
+        HttpSession session = req.getSession();
         if (sessionOptional.isPresent()){
             resp.setContentType("text/html;charset=UTF-8");
                 try (PrintWriter out = resp.getWriter()) {
@@ -31,7 +32,7 @@ public class LoginServlet extends HttpServlet {
                     out.println("    </head>");
                     out.println("    <body>");
                     out.println("        <h1>Bienvenido: " + sessionOptional.get() + " inició sesión correctamente.</h1>");
-                    if (ROLE=="Admin") {
+                    if (session.getAttribute("role").equals("Admin")) {
                         out.println("        <p><a href=\"/session-webapp/admin.html\">Menu</a></p>");
                     }else{
                         out.println("        <p><a href=\"/session-webapp/index.html\">Menu</a></p>");
@@ -53,6 +54,7 @@ public class LoginServlet extends HttpServlet {
         if (USERNAME.equals(username) && PASSWORD.equals(password)) {
             HttpSession session = req.getSession();
             session.setAttribute("user", username);
+            session.setAttribute("role", "Admin");
            resp.sendRedirect(req.getContextPath()+"/login.html");
 
         }else {
