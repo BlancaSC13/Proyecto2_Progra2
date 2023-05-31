@@ -1,9 +1,15 @@
-D:\ProgramacionVS\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\Main.java
-D:\ProgramacionVS\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\LoginServlet.java
-D:\ProgramacionVS\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Curso.java
-D:\ProgramacionVS\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\LogoutServlet.java
-D:\ProgramacionVS\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CursoService.java
-D:\ProgramacionVS\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\CursoServlet.java
-D:\ProgramacionVS\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CookieServiceImp.java
-D:\ProgramacionVS\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CookieService.java
-D:\ProgramacionVS\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CursoServiceImp.java
+C:\Users\Blanca Segura\IdeaProjects\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Curso.java
+C:\Users\Blanca Segura\IdeaProjects\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Profesor.java
+C:\Users\Blanca Segura\IdeaProjects\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\LogoutServlet.java
+C:\Users\Blanca Segura\IdeaProjects\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CookieServiceImp.java
+C:\Users\Blanca Segura\IdeaProjects\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CursoServiceImp.java
+C:\Users\Blanca Segura\IdeaProjects\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CursoService.java
+C:\Users\Blanca Segura\IdeaProjects\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\Main.java
+C:\Users\Blanca Segura\IdeaProjects\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\ProfesorServlet.java
+C:\Users\Blanca Segura\IdeaProjects\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\LoginServlet.java
+C:\Users\Blanca Segura\IdeaProjects\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\CursoServlet.java
+C:\Users\Blanca Segura\IdeaProjects\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\ProfesorService.java
+C:\Users\Blanca Segura\IdeaProjects\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\ProfesorServiceImp.java
+C:\Users\Blanca Segura\IdeaProjects\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CookieService.java
+C:\Users\Blanca Segura\IdeaProjects\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\SessionServiceImp.java
+C:\Users\Blanca Segura\IdeaProjects\session-webapp\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\SessionService.java
