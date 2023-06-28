@@ -1,6 +1,7 @@
 package cr.ac.ucr.paraiso.ie.progra2.webapp.session.data;
 
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Curso;
+import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Editorial;
 import org.jdom2.DataConversionException;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -27,7 +28,7 @@ public class EditorialesXMLDAO {
     }
 
     public static EditorialesXMLDAO crearDocumento(String rutaDocumento) throws IOException {
-        return new EditorialesXMLDAO(rutaDocumento,"cursos");
+        return new EditorialesXMLDAO(rutaDocumento,"editoriales");
     }
 
     private EditorialesXMLDAO(String rutaDocumento) throws IOException, JDOMException {
@@ -50,38 +51,28 @@ public class EditorialesXMLDAO {
         xmlOutputter.output(this.document, System.out);
     }
 
-    public void insertarCurso(Curso curso) throws IOException {
-        Element eCurso = new Element("curso");
-        eCurso.setAttribute("id", String.valueOf(curso.getId()));
+    public void insertarEditoriales(Editorial editorial) throws IOException {
+        Element eEditorial = new Element("editoriales");
+        eEditorial.setAttribute("id", String.valueOf(editorial.getEditorialID()));
 
         Element eNombre = new Element("nombre");
-        eNombre.addContent(curso.getNombre());
-        eCurso.addContent(eNombre);
+        eNombre.addContent(editorial.getNombreEditorial());
+        eEditorial.addContent(eNombre);
 
-        Element eCarrera = new Element("carrera");
-        eCarrera.addContent(curso.getCarrera());
-        eCurso.addContent(eCarrera);
-
-        Element eSemestre = new Element("semestre");
-        eSemestre.addContent(curso.getSemestre());
-        eCurso.addContent(eSemestre);
-
-        raiz.addContent(eCurso);
+        raiz.addContent(eEditorial);
         guardar();
     }
-    public ArrayList<Curso> getCursos() throws DataConversionException {
-        List eListaCursos = raiz.getChildren();
-        ArrayList<Curso> cursos = new ArrayList<Curso>();
+    public ArrayList<Editorial> getEditoriales() throws DataConversionException {
+        List eListaEditoriales = raiz.getChildren();
+        ArrayList<Editorial> editoriales = new ArrayList<Editorial>();
 
-        for (Object obj : eListaCursos) {
-            Element eCurso = (Element) obj;
-            Curso cursoActual = new Curso();
-            cursoActual.setId(eCurso.getAttribute("id").getIntValue());
-            cursoActual.setNombre(eCurso.getChildText("nombre"));
-            cursoActual.setCarrera(eCurso.getChildText("carrera"));
-            cursoActual.setSemestre(eCurso.getChildText("semestre"));
-            cursos.add(cursoActual);
+        for (Object obj : eListaEditoriales) {
+            Element eEditorial = (Element) obj;
+            Editorial editorialActual = new Editorial();
+            editorialActual.setEditorialID(eEditorial.getAttribute("id").getIntValue());
+            editorialActual.setNombreEditorial(eEditorial.getChildText("nombre"));
+            editoriales.add(editorialActual);
         }
-        return cursos;
+        return editoriales;
     }
 }

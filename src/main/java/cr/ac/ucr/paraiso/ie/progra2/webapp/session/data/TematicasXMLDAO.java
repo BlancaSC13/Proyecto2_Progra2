@@ -1,6 +1,7 @@
 package cr.ac.ucr.paraiso.ie.progra2.webapp.session.data;
 
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Curso;
+import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Tematica;
 import org.jdom2.DataConversionException;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -27,7 +28,7 @@ public class TematicasXMLDAO {
     }
 
     public static TematicasXMLDAO crearDocumento(String rutaDocumento) throws IOException {
-        return new TematicasXMLDAO(rutaDocumento,"cursos");
+        return new TematicasXMLDAO(rutaDocumento,"tematicas");
     }
 
     private TematicasXMLDAO(String rutaDocumento) throws IOException, JDOMException {
@@ -50,38 +51,28 @@ public class TematicasXMLDAO {
         xmlOutputter.output(this.document, System.out);
     }
 
-    public void insertarCurso(Curso curso) throws IOException {
-        Element eCurso = new Element("curso");
-        eCurso.setAttribute("id", String.valueOf(curso.getId()));
+    public void insertarTematicas(Tematica tematica) throws IOException {
+        Element eTematica = new Element("tematicas");
+        eTematica.setAttribute("id", String.valueOf(tematica.getTematicaID()));
 
         Element eNombre = new Element("nombre");
-        eNombre.addContent(curso.getNombre());
-        eCurso.addContent(eNombre);
+        eNombre.addContent(tematica.getNombreTematica());
+        eTematica.addContent(eNombre);
 
-        Element eCarrera = new Element("carrera");
-        eCarrera.addContent(curso.getCarrera());
-        eCurso.addContent(eCarrera);
-
-        Element eSemestre = new Element("semestre");
-        eSemestre.addContent(curso.getSemestre());
-        eCurso.addContent(eSemestre);
-
-        raiz.addContent(eCurso);
+        raiz.addContent(eTematica);
         guardar();
     }
-    public ArrayList<Curso> getCursos() throws DataConversionException {
-        List eListaCursos = raiz.getChildren();
-        ArrayList<Curso> cursos = new ArrayList<Curso>();
+    public ArrayList<Tematica> getTematicas() throws DataConversionException {
+        List eListaTematicas = raiz.getChildren();
+        ArrayList<Tematica> tematicas = new ArrayList<Tematica>();
 
-        for (Object obj : eListaCursos) {
-            Element eCurso = (Element) obj;
-            Curso cursoActual = new Curso();
-            cursoActual.setId(eCurso.getAttribute("id").getIntValue());
-            cursoActual.setNombre(eCurso.getChildText("nombre"));
-            cursoActual.setCarrera(eCurso.getChildText("carrera"));
-            cursoActual.setSemestre(eCurso.getChildText("semestre"));
-            cursos.add(cursoActual);
+        for (Object obj : eListaTematicas) {
+            Element eTematica = (Element) obj;
+            Tematica tematicaActual = new Tematica();
+            tematicaActual.setTematicaID(eTematica.getAttribute("id").getIntValue());
+            tematicaActual.setNombreTematica(eTematica.getChildText("nombre"));
+            tematicas.add(tematicaActual);
         }
-        return cursos;
+        return tematicas;
     }
 }

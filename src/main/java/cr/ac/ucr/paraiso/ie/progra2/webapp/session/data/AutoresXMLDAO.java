@@ -51,7 +51,7 @@ public class AutoresXMLDAO {
         xmlOutputter.output(this.document, System.out);
     }
 
-    public void insertarCurso(Autor autor) throws IOException {
+    public void insertarAutores(Autor autor) throws IOException {
         Element eAutor = new Element("autor");
         eAutor.setAttribute("id", String.valueOf(autor.getAutorID()));
 
@@ -71,11 +71,11 @@ public class AutoresXMLDAO {
         ArrayList<Autor> autores = new ArrayList<Autor>();
 
         for (Object obj : eListaAutores) {
-            Element eCurso = (Element) obj;
+            Element eAutor = (Element) obj;
             Autor autorActual = new Autor();
-            autorActual.setAutorID(eCurso.getAttribute("id").getIntValue());
-            autorActual.setNombreAutor(eCurso.getChildText("nombre"));
-            autorActual.setApellidoAutor(eCurso.getChildText("carrera"));
+            autorActual.setAutorID(eAutor.getAttribute("id").getIntValue());
+            autorActual.setNombreAutor(eAutor.getChildText("nombre"));
+            autorActual.setApellidoAutor(eAutor.getChildText("carrera"));
             autores.add(autorActual);
         }
         return autores;
