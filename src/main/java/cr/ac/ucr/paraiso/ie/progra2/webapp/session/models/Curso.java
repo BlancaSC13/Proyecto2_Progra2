@@ -9,6 +9,9 @@ public class Curso {
 
     private String semestre;
 
+    public Curso() {
+    }
+
     public Curso(int id, String nombre, String carrera, String semestre) {
         this.id = id;
         this.nombre = nombre;

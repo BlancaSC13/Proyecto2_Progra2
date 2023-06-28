@@ -1,7 +1,7 @@
 package cr.ac.ucr.paraiso.ie.progra2.webapp.session.servlets;
 
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.CookieService;
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.CookieServiceImp;
+import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.SessionService;
+import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.SessionServiceImp;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;

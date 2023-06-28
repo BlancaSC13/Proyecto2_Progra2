@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cursos>
+  <curso id="200">
+    <nombre>Programación I</nombre>
+    <carrera>Informática</carrera>
+    <semestre>II</semestre>
+  </curso>
+  <curso id="300">
+    <nombre>Programación II</nombre>
+    <carrera>Informática</carrera>
+    <semestre>I</semestre>
+  </curso>
+  <curso id="400">
+    <nombre>Algoritmos y Estructuras de Datos</nombre>
+    <carrera>Informática</carrera>
+    <semestre>I</semestre>
+  </curso>
+</cursos>

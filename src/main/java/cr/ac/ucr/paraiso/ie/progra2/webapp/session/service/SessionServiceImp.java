@@ -1,6 +1,5 @@
-package cr.ac.ucr.paraiso.ie.progra2.webapp.session.servlets;
+package cr.ac.ucr.paraiso.ie.progra2.webapp.session.service;
 
-import jakarta.batch.runtime.context.StepContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 

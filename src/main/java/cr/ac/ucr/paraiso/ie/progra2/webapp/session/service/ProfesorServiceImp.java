@@ -1,18 +1,22 @@
 package cr.ac.ucr.paraiso.ie.progra2.webapp.session.service;
 
+import cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.ProfesorXMLDAO;
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Curso;
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Profesor;
+import org.jdom2.JDOMException;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ProfesorServiceImp implements ProfesorService{
+    private ProfesorXMLDAO profesorXMLDAO;
 
     @Override
-    public List<Profesor> listar() {
-        return Arrays.asList(new Profesor("Carlos","Sanabria","P2344","Cálculo"),
-                new Profesor("Mariana","López","P1234","Ética"),
-                new Profesor("Rita","Cantillo","P4567","Programación II"),
-                new Profesor("Rodrigo","Cordero","P9876","Estadística"));
+    public List<Profesor> listar() throws IOException, JDOMException {
+         profesorXMLDAO = ProfesorXMLDAO.abrirDocumento("profesores.xml");
+        ArrayList<Profesor> profesors = profesorXMLDAO.getProfesores();
+        return profesors;
     }
 }

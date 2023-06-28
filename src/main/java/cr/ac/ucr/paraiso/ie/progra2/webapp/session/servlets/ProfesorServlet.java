@@ -1,16 +1,13 @@
 package cr.ac.ucr.paraiso.ie.progra2.webapp.session.servlets;
 
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Curso;
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Profesor;
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.CursoService;
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.CursoServiceImp;
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.ProfesorService;
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.ProfesorServiceImp;
+import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jdom2.JDOMException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,7 +19,12 @@ public class ProfesorServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProfesorService service = new ProfesorServiceImp();
-        List<Profesor> profesors = service.listar();
+        List<Profesor> profesors = null;
+        try {
+            profesors = service.listar();
+        } catch (JDOMException e) {
+            throw new RuntimeException(e);
+        }
 
         SessionService getSession = new SessionServiceImp();
         Optional<String> sessionOptional = getSession.getUser(req);

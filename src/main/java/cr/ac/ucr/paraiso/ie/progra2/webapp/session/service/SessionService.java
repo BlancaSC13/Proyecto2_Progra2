@@ -1,4 +1,4 @@
-package cr.ac.ucr.paraiso.ie.progra2.webapp.session.servlets;
+package cr.ac.ucr.paraiso.ie.progra2.webapp.session.service;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

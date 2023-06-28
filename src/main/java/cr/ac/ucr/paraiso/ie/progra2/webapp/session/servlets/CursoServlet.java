@@ -2,13 +2,12 @@ package cr.ac.ucr.paraiso.ie.progra2.webapp.session.servlets;
 
 
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Curso;
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.CookieService;
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.CookieServiceImp;
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.CursoService;
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.CursoServiceImp;
+import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import org.jdom2.DataConversionException;
+import org.jdom2.JDOMException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,7 +19,12 @@ public class CursoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         CursoService service = new CursoServiceImp();
-        List<Curso> cursos = service.listar();
+        List<Curso> cursos = null;
+        try {
+            cursos = service.listar();
+        } catch (JDOMException e) {
+            throw new RuntimeException(e);
+        }
         HttpSession session = req.getSession();
         SessionService getSession = new SessionServiceImp();
         Optional<String> sessionOptional = getSession.getUser(req);

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profesores>
+  <profesor carnet="P2334">
+    <nombre>Carlos</nombre>
+    <apellidos>Boza</apellidos>
+    <curso>Algoritmos</curso>
+  </profesor>
+  <profesor carnet="P2334">
+    <nombre>Carlos</nombre>
+    <apellidos>Boza</apellidos>
+    <curso>Algoritmos</curso>
+  </profesor>
+  <profesor carnet="P2334">
+    <nombre>Carlos</nombre>
+    <apellidos>Boza</apellidos>
+    <curso>Algoritmos</curso>
+  </profesor>
+</profesores>
