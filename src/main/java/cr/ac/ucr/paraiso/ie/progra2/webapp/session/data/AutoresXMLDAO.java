@@ -1,5 +1,6 @@
 package cr.ac.ucr.paraiso.ie.progra2.webapp.session.data;
 
+import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Autor;
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Curso;
 import org.jdom2.DataConversionException;
 import org.jdom2.Document;
@@ -27,7 +28,7 @@ public class AutoresXMLDAO {
     }
 
     public static AutoresXMLDAO crearDocumento(String rutaDocumento) throws IOException {
-        return new AutoresXMLDAO(rutaDocumento,"cursos");
+        return new AutoresXMLDAO(rutaDocumento,"autores");
     }
 
     private AutoresXMLDAO(String rutaDocumento) throws IOException, JDOMException {
@@ -50,38 +51,33 @@ public class AutoresXMLDAO {
         xmlOutputter.output(this.document, System.out);
     }
 
-    public void insertarCurso(Curso curso) throws IOException {
-        Element eCurso = new Element("curso");
-        eCurso.setAttribute("id", String.valueOf(curso.getId()));
+    public void insertarCurso(Autor autor) throws IOException {
+        Element eAutor = new Element("autor");
+        eAutor.setAttribute("id", String.valueOf(autor.getAutorID()));
 
         Element eNombre = new Element("nombre");
-        eNombre.addContent(curso.getNombre());
-        eCurso.addContent(eNombre);
+        eNombre.addContent(autor.getNombreAutor());
+        eAutor.addContent(eNombre);
 
-        Element eCarrera = new Element("carrera");
-        eCarrera.addContent(curso.getCarrera());
-        eCurso.addContent(eCarrera);
+        Element eApellido = new Element("apellido");
+        eApellido.addContent(autor.getApellidoAutor());
+        eAutor.addContent(eApellido);
 
-        Element eSemestre = new Element("semestre");
-        eSemestre.addContent(curso.getSemestre());
-        eCurso.addContent(eSemestre);
-
-        raiz.addContent(eCurso);
+        raiz.addContent(eAutor);
         guardar();
     }
-    public ArrayList<Curso> getCursos() throws DataConversionException {
-        List eListaCursos = raiz.getChildren();
-        ArrayList<Curso> cursos = new ArrayList<Curso>();
+    public ArrayList<Autor> getAutores() throws DataConversionException {
+        List eListaAutores = raiz.getChildren();
+        ArrayList<Autor> autores = new ArrayList<Autor>();
 
-        for (Object obj : eListaCursos) {
+        for (Object obj : eListaAutores) {
             Element eCurso = (Element) obj;
-            Curso cursoActual = new Curso();
-            cursoActual.setId(eCurso.getAttribute("id").getIntValue());
-            cursoActual.setNombre(eCurso.getChildText("nombre"));
-            cursoActual.setCarrera(eCurso.getChildText("carrera"));
-            cursoActual.setSemestre(eCurso.getChildText("semestre"));
-            cursos.add(cursoActual);
+            Autor autorActual = new Autor();
+            autorActual.setAutorID(eCurso.getAttribute("id").getIntValue());
+            autorActual.setNombreAutor(eCurso.getChildText("nombre"));
+            autorActual.setApellidoAutor(eCurso.getChildText("carrera"));
+            autores.add(autorActual);
         }
-        return cursos;
+        return autores;
     }
 }
