@@ -1,10 +1,7 @@
 package cr.ac.ucr.paraiso.ie.progra2.webapp.session.data;
 
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Curso;
-import org.jdom2.DataConversionException;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
+import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Libro;
+import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
@@ -12,6 +9,7 @@ import org.jdom2.output.XMLOutputter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class LibrosXMLDAO {
@@ -27,7 +25,7 @@ public class LibrosXMLDAO {
     }
 
     public static LibrosXMLDAO crearDocumento(String rutaDocumento) throws IOException {
-        return new LibrosXMLDAO(rutaDocumento,"cursos");
+        return new LibrosXMLDAO(rutaDocumento,"libros");
     }
 
     private LibrosXMLDAO(String rutaDocumento) throws IOException, JDOMException {
@@ -50,38 +48,43 @@ public class LibrosXMLDAO {
         xmlOutputter.output(this.document, System.out);
     }
 
-    public void insertarCurso(Curso curso) throws IOException {
-        Element eCurso = new Element("curso");
-        eCurso.setAttribute("id", String.valueOf(curso.getId()));
+    public void insertarLibro(Libro libro) throws IOException {
+        Element eLibro = new Element("libros");
+        eLibro.setAttribute("id", String.valueOf(libro.getLibroID()));
 
-        Element eNombre = new Element("nombre");
-        eNombre.addContent(curso.getNombre());
-        eCurso.addContent(eNombre);
+        Element eTitulo = new Element("titulo");
+        eTitulo.addContent(libro.getTitulo());
+        eLibro.addContent(eTitulo);
 
-        Element eCarrera = new Element("carrera");
-        eCarrera.addContent(curso.getCarrera());
-        eCurso.addContent(eCarrera);
+        Element eAutor = new Element("autor");
+        eAutor.addContent((Collection<? extends Content>) libro.getAutor());
+        eLibro.addContent(eAutor);
 
-        Element eSemestre = new Element("semestre");
-        eSemestre.addContent(curso.getSemestre());
-        eCurso.addContent(eSemestre);
+        Element eEditorial = new Element("editorial");
+        eEditorial.addContent((Collection<? extends Content>) libro.getEditorial());
+        eLibro.addContent(eEditorial);
 
-        raiz.addContent(eCurso);
+        Element eTematica = new Element("tematica");
+        eTematica.addContent((Collection<? extends Content>) libro.getTematica());
+        eLibro.addContent(eTematica);
+
+        raiz.addContent(eLibro);
         guardar();
     }
-    public ArrayList<Curso> getCursos() throws DataConversionException {
-        List eListaCursos = raiz.getChildren();
-        ArrayList<Curso> cursos = new ArrayList<Curso>();
+    public ArrayList<Libro> getLibros() throws DataConversionException {
+        List eListaLibros = raiz.getChildren();
+        ArrayList<Libro> libros = new ArrayList<Libro>();
 
-        for (Object obj : eListaCursos) {
-            Element eCurso = (Element) obj;
-            Curso cursoActual = new Curso();
-            cursoActual.setId(eCurso.getAttribute("id").getIntValue());
-            cursoActual.setNombre(eCurso.getChildText("nombre"));
-            cursoActual.setCarrera(eCurso.getChildText("carrera"));
-            cursoActual.setSemestre(eCurso.getChildText("semestre"));
-            cursos.add(cursoActual);
+        for (Object obj : eListaLibros) {
+            Element eLibro = (Element) obj;
+            Libro libroActual = new Libro();
+            libroActual.setLibroID(eLibro.getAttribute("id").getIntValue());
+            libroActual.setTitulo(eLibro.getChildText("titulo"));
+           /* libroActual.setAutor(eLibro.getChildText("autor"));
+            libroActual.setEditorial(eLibro.getChildText("editorial"));
+            libroActual.setTematica(eLibro.getChildText("tematica"));*/
+            libros.add(libroActual);
         }
-        return cursos;
+        return libros;
     }
 }
