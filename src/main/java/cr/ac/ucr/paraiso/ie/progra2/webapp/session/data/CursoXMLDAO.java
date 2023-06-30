@@ -10,9 +10,9 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
 import java.io.FileWriter;
-import java.io.FilterWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class CursoXMLDAO {
@@ -68,6 +68,20 @@ public class CursoXMLDAO {
         eCurso.addContent(eSemestre);
 
         raiz.addContent(eCurso);
+        guardar();
+    }
+    public void eliminarCurso(int cursoID) throws IOException, DataConversionException {
+        List<Element> eListaCursos = raiz.getChildren("cursos");
+        Iterator<Element> iterator = eListaCursos.iterator();
+
+        while (iterator.hasNext()) {
+            Element eCurso = iterator.next();
+            if (eCurso.getAttribute("id").getIntValue() == cursoID) {
+                iterator.remove();
+                break;
+            }
+        }
+
         guardar();
     }
     public ArrayList<Curso> getCursos() throws DataConversionException {

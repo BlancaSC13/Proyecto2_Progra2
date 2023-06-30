@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 public class LibrosXMLDAO {
@@ -70,6 +71,43 @@ public class LibrosXMLDAO {
 
         raiz.addContent(eLibro);
         guardar();
+    }
+
+    public void eliminarLibro(int libroID) throws IOException, DataConversionException {
+        List<Element> eListaLibros = raiz.getChildren("libros");
+        Iterator<Element> iterator = eListaLibros.iterator();
+
+        while (iterator.hasNext()) {
+            Element eLibro = iterator.next();
+            if (eLibro.getAttribute("id").getIntValue() == libroID) {
+                iterator.remove();
+                break;
+            }
+        }
+
+        guardar();
+    }
+
+    public ArrayList<Libro> buscarLibro(String consulta) throws DataConversionException {
+        List<Element> eListaLibros = raiz.getChildren("libros");
+        ArrayList<Libro> librosEncontrados = new ArrayList<>();
+
+        for (Element eLibro : eListaLibros) {
+            String titulo = eLibro.getChildText("titulo");
+            if (titulo != null && titulo.toLowerCase().contains(consulta.toLowerCase())) {
+                Libro libroEncontrado = new Libro();
+                libroEncontrado.setLibroID(eLibro.getAttribute("id").getIntValue());
+                libroEncontrado.setTitulo(titulo);
+                /*
+                libroEncontrado.setAutor(eLibro.getChildText("autor"));
+                libroEncontrado.setEditorial(eLibro.getChildText("editorial"));
+                libroEncontrado.setTematica(eLibro.getChildText("tematica"));
+                */
+                librosEncontrados.add(libroEncontrado);
+            }
+        }
+
+        return librosEncontrados;
     }
     public ArrayList<Libro> getLibros() throws DataConversionException {
         List eListaLibros = raiz.getChildren();
