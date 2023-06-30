@@ -1,7 +1,6 @@
 package cr.ac.ucr.paraiso.ie.progra2.webapp.session.data;
 
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Autor;
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Curso;
 import org.jdom2.DataConversionException;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -15,23 +14,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AutoresXMLDAO {
+public class AutorXMLDAO {
     private Document document;
     private Element raiz; //pequeños objetos dentro del documento
     private String rutaDocumento;
 
-    public AutoresXMLDAO(String rutaDocumento, String nombreRaiz) throws IOException {
+    public AutorXMLDAO(String rutaDocumento, String nombreRaiz) throws IOException {
         this.raiz = new Element(nombreRaiz);
         this.rutaDocumento = rutaDocumento;
         this.document = new Document(raiz);
         guardar();
     }
 
-    public static AutoresXMLDAO crearDocumento(String rutaDocumento) throws IOException {
-        return new AutoresXMLDAO(rutaDocumento,"autores");
+    public static AutorXMLDAO crearDocumento(String rutaDocumento) throws IOException {
+        return new AutorXMLDAO(rutaDocumento,"autores");
     }
 
-    private AutoresXMLDAO(String rutaDocumento) throws IOException, JDOMException {
+    private AutorXMLDAO(String rutaDocumento) throws IOException, JDOMException {
         SAXBuilder saxBuilder = new SAXBuilder();
         saxBuilder.setIgnoringElementContentWhitespace(true);
         this.document = saxBuilder.build(rutaDocumento);
@@ -39,8 +38,8 @@ public class AutoresXMLDAO {
         this.rutaDocumento = rutaDocumento;
     }
 
-    public static AutoresXMLDAO abrirDocumento(String rutaDocumento) throws IOException, JDOMException {
-        return new AutoresXMLDAO(rutaDocumento);
+    public static AutorXMLDAO abrirDocumento(String rutaDocumento) throws IOException, JDOMException {
+        return new AutorXMLDAO(rutaDocumento);
     }
 
     public void guardar() throws IOException {
@@ -66,6 +65,19 @@ public class AutoresXMLDAO {
         raiz.addContent(eAutor);
         guardar();
     }
+    public Autor buscar(int idAutor){
+        List<Element> eAutores = raiz.getChildren();
+        Autor autor = new Autor();
+        for (Element eAutor: eAutores ) {
+            if (Integer.parseInt( eAutor.getAttributeValue("id") ) == idAutor){
+                autor.setAutorID(Integer.parseInt( eAutor.getAttributeValue("id") ));
+                autor.setNombreAutor(eAutor.getChildText("nombre"));
+                autor.setApellidoAutor(eAutor.getChildText("apellido"));
+            }
+        }
+        return autor;
+    }
+
     public ArrayList<Autor> getAutores() throws DataConversionException {
         List eListaAutores = raiz.getChildren();
         ArrayList<Autor> autores = new ArrayList<Autor>();

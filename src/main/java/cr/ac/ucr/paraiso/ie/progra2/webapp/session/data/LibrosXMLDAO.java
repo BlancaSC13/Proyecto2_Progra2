@@ -1,5 +1,6 @@
 package cr.ac.ucr.paraiso.ie.progra2.webapp.session.data;
 
+import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Autor;
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Libro;
 import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
@@ -49,24 +50,36 @@ public class LibrosXMLDAO {
         xmlOutputter.output(this.document, System.out);
     }
 
+    public void close(){
+
+
+    }
+
     public void insertarLibro(Libro libro) throws IOException {
-        Element eLibro = new Element("libros");
+        Element eLibro = new Element("libro");
         eLibro.setAttribute("id", String.valueOf(libro.getLibroID()));
 
         Element eTitulo = new Element("titulo");
         eTitulo.addContent(libro.getTitulo());
         eLibro.addContent(eTitulo);
 
-        Element eAutor = new Element("autor");
-        eAutor.addContent((Collection<? extends Content>) libro.getAutor());
-        eLibro.addContent(eAutor);
+        Element eAutores = new Element("autores");
+        for (Autor autor: libro.getAutores()) {
+            Element eAutor = new Element("idAutor");
+            eAutor.addContent(String.valueOf(autor.getAutorID()));
+            eAutores.addContent(eAutor);
+        }
+        eLibro.addContent(eAutores);
+
+        /*eAutor.addContent(String.valueOf(libro.getAutor().getAutorID()));
+        eLibro.addContent(eAutor);*/
 
         Element eEditorial = new Element("editorial");
-        eEditorial.addContent((Collection<? extends Content>) libro.getEditorial());
+        eEditorial.addContent(String.valueOf((libro.getEditorial().getEditorialID())));
         eLibro.addContent(eEditorial);
 
         Element eTematica = new Element("tematica");
-        eTematica.addContent((Collection<? extends Content>) libro.getTematica());
+        eTematica.addContent(libro.getTematica().getNombreTematica());
         eLibro.addContent(eTematica);
 
         raiz.addContent(eLibro);
@@ -74,15 +87,19 @@ public class LibrosXMLDAO {
     }
 
     public void eliminarLibro(int libroID) throws IOException, DataConversionException {
-        List<Element> eListaLibros = raiz.getChildren("libros");
+        List<Element> eListaLibros = raiz.getChildren("libro");
         Iterator<Element> iterator = eListaLibros.iterator();
 
-        while (iterator.hasNext()) {
-            Element eLibro = iterator.next();
+
+        int i =0;
+        for (Element eLibro: eListaLibros) {
+
             if (eLibro.getAttribute("id").getIntValue() == libroID) {
-                iterator.remove();
+                eListaLibros.remove(i);
+                // iterator.remove();
                 break;
             }
+            i++;
         }
 
         guardar();
@@ -94,31 +111,38 @@ public class LibrosXMLDAO {
 
         for (Element eLibro : eListaLibros) {
             String titulo = eLibro.getChildText("titulo");
-            if (titulo != null && titulo.toLowerCase().contains(consulta.toLowerCase())) {
+            if (titulo.toLowerCase().equals(consulta.toLowerCase())) {
                 Libro libroEncontrado = new Libro();
                 libroEncontrado.setLibroID(eLibro.getAttribute("id").getIntValue());
                 libroEncontrado.setTitulo(titulo);
-                /*
-                libroEncontrado.setAutor(eLibro.getChildText("autor"));
-                libroEncontrado.setEditorial(eLibro.getChildText("editorial"));
-                libroEncontrado.setTematica(eLibro.getChildText("tematica"));
-                */
+                //libroEncontrado.getAutor().setAutorID(Integer.parseInt(eLibro.getChildText("autor")));
+                //libroEncontrado.getEditorial().setEditorialID(Integer.parseInt((eLibro.getChildText("editorial"))));
+                //libroEncontrado.getTematica().setNombreTematica(eLibro.getChildText("tematica"));
                 librosEncontrados.add(libroEncontrado);
+                System.out.println("estoy");
             }
+            System.out.println("no entra");
         }
+
 
         return librosEncontrados;
     }
-    public ArrayList<Libro> getLibros() throws DataConversionException {
-        List eListaLibros = raiz.getChildren();
+    public ArrayList<Libro> getLibros() throws JDOMException, IOException {
+        List<Element> eLibros = raiz.getChildren();
         ArrayList<Libro> libros = new ArrayList<Libro>();
 
-        for (Object obj : eListaLibros) {
-            Element eLibro = (Element) obj;
+        for (Element eLibro : eLibros) {
             Libro libroActual = new Libro();
             libroActual.setLibroID(eLibro.getAttribute("id").getIntValue());
             libroActual.setTitulo(eLibro.getChildText("titulo"));
-           /* libroActual.setAutor(eLibro.getChildText("autor"));
+            List<Element> eAutores = eLibro.getChildren("autores");
+            for (Element eIdAutor: eAutores) {
+                AutorXMLDAO autorXMLDAO;
+                autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
+                Autor autor = autorXMLDAO.buscar(Integer.parseInt(eIdAutor.getChildText("idAutor")));
+                libroActual.getAutores().add(autor);
+            }
+          /*  libroActual.setAutor(eLibro.getChildText("autor"));
             libroActual.setEditorial(eLibro.getChildText("editorial"));
             libroActual.setTematica(eLibro.getChildText("tematica"));*/
             libros.add(libroActual);

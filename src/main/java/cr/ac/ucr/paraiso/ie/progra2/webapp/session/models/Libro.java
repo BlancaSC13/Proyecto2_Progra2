@@ -1,24 +1,29 @@
 package cr.ac.ucr.paraiso.ie.progra2.webapp.session.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Libro {
 
     private int libroID;
     private String titulo;
-    private Autor autor;
+    private List<Autor> autores;
     private Editorial editorial;
     private Tematica tematica;
 
     public Libro() {
+        autores = new ArrayList<>();
+        editorial = new Editorial();
+        tematica = new Tematica();
     }
 
-    public Libro(int libroID, String titulo, Autor autor, Editorial editorial, Tematica tematica) {
+    public Libro(int libroID, String titulo, List<Autor> autores, Editorial editorial, Tematica tematica) {
         this.libroID = libroID;
         this.titulo = titulo;
-        this.autor = autor;
+        this.autores = autores;
         this.editorial = editorial;
         this.tematica = tematica;
     }
-
 
     public int getLibroID() {
         return libroID;
@@ -36,12 +41,12 @@ public class Libro {
         this.titulo = titulo;
     }
 
-    public Autor getAutor() {
-        return autor;
+    public List<Autor> getAutores() {
+        return autores;
     }
 
-    public void setAutor(Autor autor) {
-        this.autor = autor;
+    public void setAutores(List<Autor> autores) {
+        this.autores = autores;
     }
 
     public Editorial getEditorial() {
