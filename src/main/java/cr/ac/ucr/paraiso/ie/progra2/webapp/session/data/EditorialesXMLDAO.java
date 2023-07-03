@@ -2,6 +2,7 @@ package cr.ac.ucr.paraiso.ie.progra2.webapp.session.data;
 
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Curso;
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Editorial;
+import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Tematica;
 import org.jdom2.DataConversionException;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -74,5 +75,17 @@ public class EditorialesXMLDAO {
             editoriales.add(editorialActual);
         }
         return editoriales;
+    }
+    public Editorial buscar (int idEditorial) throws DataConversionException {
+        List eListaEditoriales = raiz.getChildren();
+        Editorial editorialEncontrada = new Editorial();
+        for (Object obj:eListaEditoriales) {
+            Element eEditorial = (Element) obj;
+            if (eEditorial.getAttribute("id").getIntValue()==idEditorial){
+               editorialEncontrada.setEditorialID(idEditorial);
+               editorialEncontrada.setNombreEditorial(eEditorial.getChildText("nombre"));
+            }
+        }
+        return editorialEncontrada;
     }
 }

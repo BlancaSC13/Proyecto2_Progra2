@@ -75,4 +75,16 @@ public class TematicasXMLDAO {
         }
         return tematicas;
     }
+    public Tematica buscar (String nombre) throws DataConversionException {
+        List eListaTematicas = raiz.getChildren();
+        Tematica tematicaEncontrada = new Tematica();
+        for (Object obj:eListaTematicas) {
+            Element eTematica = (Element) obj;
+            if (eTematica.getChildText("nombre").equals(nombre)){
+                tematicaEncontrada.setTematicaID(eTematica.getAttribute("id").getIntValue());
+                tematicaEncontrada.setNombreTematica(nombre);
+            }
+        }
+        return tematicaEncontrada;
+    }
 }
