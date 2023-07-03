@@ -10,7 +10,6 @@ import org.jdom2.output.XMLOutputter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,6 +17,10 @@ public class LibrosXMLDAO {
     private Document document;
     private Element raiz; //pequeños objetos dentro del documento
     private String rutaDocumento;
+    private  AutorXMLDAO autorXMLDAO;
+    private TematicasXMLDAO tematicasXMLDAO;
+    private EditorialesXMLDAO editorialesXMLDAO;
+
 
     public LibrosXMLDAO(String rutaDocumento, String nombreRaiz) throws IOException {
         this.raiz = new Element(nombreRaiz);
@@ -71,9 +74,6 @@ public class LibrosXMLDAO {
         }
         eLibro.addContent(eAutores);
 
-        /*eAutor.addContent(String.valueOf(libro.getAutor().getAutorID()));
-        eLibro.addContent(eAutor);*/
-
         Element eEditorial = new Element("editorial");
         eEditorial.addContent(String.valueOf((libro.getEditorial().getEditorialID())));
         eLibro.addContent(eEditorial);
@@ -90,7 +90,6 @@ public class LibrosXMLDAO {
         List<Element> eListaLibros = raiz.getChildren("libro");
         Iterator<Element> iterator = eListaLibros.iterator();
 
-
         int i =0;
         for (Element eLibro: eListaLibros) {
 
@@ -105,48 +104,56 @@ public class LibrosXMLDAO {
         guardar();
     }
 
-    public ArrayList<Libro> buscarLibro(String consulta) throws DataConversionException {
-        List<Element> eListaLibros = raiz.getChildren("libros");
+    public ArrayList<Libro> buscarLibro(String consulta) throws JDOMException, IOException {
+        List<Element> eListaLibros = raiz.getChildren("libro");
         ArrayList<Libro> librosEncontrados = new ArrayList<>();
-
+        inicializarXML();
+        List<Autor> autoresEncontrados = new ArrayList<Autor>();
         for (Element eLibro : eListaLibros) {
             String titulo = eLibro.getChildText("titulo");
             if (titulo.toLowerCase().equals(consulta.toLowerCase())) {
                 Libro libroEncontrado = new Libro();
                 libroEncontrado.setLibroID(eLibro.getAttribute("id").getIntValue());
                 libroEncontrado.setTitulo(titulo);
-                //libroEncontrado.getAutor().setAutorID(Integer.parseInt(eLibro.getChildText("autor")));
-                //libroEncontrado.getEditorial().setEditorialID(Integer.parseInt((eLibro.getChildText("editorial"))));
-                //libroEncontrado.getTematica().setNombreTematica(eLibro.getChildText("tematica"));
+                List<Element> eAutores = eLibro.getChild("autores").getChildren("idAutor");
+                for (Element eIdAutor: eAutores) {
+                    AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
+                    Autor autor = autorXMLDAO.buscar(Integer.parseInt(eIdAutor.getText()));
+                    libroEncontrado.getAutores().add(autor);
+                }
+                libroEncontrado.setEditorial(editorialesXMLDAO.buscar(Integer.parseInt(eLibro.getChildText("editorial"))));
+                libroEncontrado.setTematica(tematicasXMLDAO.buscar(eLibro.getChildText("tematica")));
                 librosEncontrados.add(libroEncontrado);
-                System.out.println("estoy");
             }
-            System.out.println("no entra");
+
         }
-
-
         return librosEncontrados;
     }
     public ArrayList<Libro> getLibros() throws JDOMException, IOException {
         List<Element> eLibros = raiz.getChildren();
         ArrayList<Libro> libros = new ArrayList<Libro>();
-
+        inicializarXML();
         for (Element eLibro : eLibros) {
             Libro libroActual = new Libro();
             libroActual.setLibroID(eLibro.getAttribute("id").getIntValue());
             libroActual.setTitulo(eLibro.getChildText("titulo"));
-            List<Element> eAutores = eLibro.getChildren("autores");
+            List<Element> eAutores = eLibro.getChild("autores").getChildren("idAutor");
             for (Element eIdAutor: eAutores) {
-                AutorXMLDAO autorXMLDAO;
-                autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
-                Autor autor = autorXMLDAO.buscar(Integer.parseInt(eIdAutor.getChildText("idAutor")));
+                AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
+                Autor autor = autorXMLDAO.buscar(Integer.parseInt(eIdAutor.getText()));
                 libroActual.getAutores().add(autor);
             }
-          /*  libroActual.setAutor(eLibro.getChildText("autor"));
-            libroActual.setEditorial(eLibro.getChildText("editorial"));
-            libroActual.setTematica(eLibro.getChildText("tematica"));*/
+          /*  libroActual.setAutor(eLibro.getChildText("autor"));*/
+           libroActual.setEditorial(editorialesXMLDAO.buscar(Integer.parseInt(eLibro.getChildText("editorial"))));
+           libroActual.setTematica(tematicasXMLDAO.buscar(eLibro.getChildText("tematica")));
             libros.add(libroActual);
         }
         return libros;
+    }
+
+    private void inicializarXML() throws IOException, JDOMException {
+        autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
+        tematicasXMLDAO = TematicasXMLDAO.abrirDocumento("tematicas.xml");
+        editorialesXMLDAO = EditorialesXMLDAO.abrirDocumento("editoriales.xml");
     }
 }

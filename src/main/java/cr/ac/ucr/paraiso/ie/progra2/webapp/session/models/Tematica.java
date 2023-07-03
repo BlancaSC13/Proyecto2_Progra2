@@ -4,13 +4,15 @@ public class Tematica {
 
     private int tematicaID;
     private String nombreTematica;
+    private static int contador=1;
 
     public Tematica() {
     }
 
-    public Tematica(int tematicaID, String nombreTematica) {
-        this.tematicaID = tematicaID;
+    public Tematica(String nombreTematica) {
+        this.tematicaID = contador;
         this.nombreTematica = nombreTematica;
+        contador++;
     }
 
     public int getTematicaID() {
@@ -27,5 +29,13 @@ public class Tematica {
 
     public void setNombreTematica(String nombreTematica) {
         this.nombreTematica = nombreTematica;
+    }
+
+    @Override
+    public String toString() {
+        return "Tematica{" +
+                "tematicaID=" + tematicaID +
+                ", nombreTematica='" + nombreTematica + '\'' +
+                '}';
     }
 }

@@ -10,6 +10,7 @@ public class Libro {
     private List<Autor> autores;
     private Editorial editorial;
     private Tematica tematica;
+    private static int contador = 1;
 
     public Libro() {
         autores = new ArrayList<>();
@@ -17,12 +18,13 @@ public class Libro {
         tematica = new Tematica();
     }
 
-    public Libro(int libroID, String titulo, List<Autor> autores, Editorial editorial, Tematica tematica) {
-        this.libroID = libroID;
+    public Libro(String titulo, List<Autor> autores, Editorial editorial, Tematica tematica) {
+        this.libroID = contador;
         this.titulo = titulo;
         this.autores = autores;
         this.editorial = editorial;
         this.tematica = tematica;
+        contador++;
     }
 
     public int getLibroID() {
@@ -63,5 +65,16 @@ public class Libro {
 
     public void setTematica(Tematica tematica) {
         this.tematica = tematica;
+    }
+
+    @Override
+    public String toString() {
+        return "Libro{" +
+                "libroID=" + libroID +
+                ", titulo='" + titulo + '\'' +
+                ", autores=" + autores +
+                ", editorial=" + editorial +
+                ", tematica=" + tematica +
+                '}';
     }
 }
