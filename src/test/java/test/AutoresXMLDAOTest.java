@@ -17,8 +17,8 @@ public class AutoresXMLDAOTest {
         AutorXMLDAO.crearDocumento("autores.xml");
         autoresXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
 
-        autoresXMLDAO.insertarAutores( new Autor(1, "J.k", "Rowilling"));
-        autoresXMLDAO.insertarAutores( new Autor(2, "Gabriel", "García"));
+        autoresXMLDAO.insertarAutores( new Autor("J.k", "Rowilling"));
+        autoresXMLDAO.insertarAutores( new Autor("Gabriel", "García"));
 
 
 

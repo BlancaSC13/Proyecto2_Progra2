@@ -4,13 +4,15 @@ public class Editorial {
 
     private int editorialID;
     private String nombreEditorial;
+    private static int contador = 1;
 
     public Editorial() {
     }
 
-    public Editorial(int editorialID, String nombreEditorial) {
-        this.editorialID = editorialID;
+    public Editorial(String nombreEditorial) {
+        this.editorialID = contador;
         this.nombreEditorial = nombreEditorial;
+        contador++;
     }
 
     public int getEditorialID() {
@@ -27,5 +29,13 @@ public class Editorial {
 
     public void setNombreEditorial(String nombreEditorial) {
         this.nombreEditorial = nombreEditorial;
+    }
+
+    @Override
+    public String toString() {
+        return "Editorial{" +
+                "editorialID=" + editorialID +
+                ", nombreEditorial='" + nombreEditorial + '\'' +
+                '}';
     }
 }

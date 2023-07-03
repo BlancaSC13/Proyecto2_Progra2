@@ -5,14 +5,16 @@ public class Autor {
     private int autorID;
     private String nombreAutor;
     private String apellidoAutor;
+    private static int contador = 1;
 
     public Autor() {
     }
 
-    public Autor(int autorID, String nombreAutor, String apellidoAutor) {
-        this.autorID = autorID;
+    public Autor(String nombreAutor, String apellidoAutor) {
+        this.autorID = contador;
         this.nombreAutor = nombreAutor;
         this.apellidoAutor = apellidoAutor;
+        contador++;
     }
 
     public int getAutorID() {
@@ -37,5 +39,14 @@ public class Autor {
 
     public void setApellidoAutor(String apellidoAutor) {
         this.apellidoAutor = apellidoAutor;
+    }
+
+    @Override
+    public String toString() {
+        return "Autor{" +
+                "autorID=" + autorID +
+                ", nombreAutor='" + nombreAutor + '\'' +
+                ", apellidoAutor='" + apellidoAutor + '\'' +
+                '}';
     }
 }
