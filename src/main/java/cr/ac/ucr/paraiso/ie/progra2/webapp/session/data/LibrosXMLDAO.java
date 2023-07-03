@@ -74,9 +74,6 @@ public class LibrosXMLDAO {
         }
         eLibro.addContent(eAutores);
 
-        /*eAutor.addContent(String.valueOf(libro.getAutor().getAutorID()));
-        eLibro.addContent(eAutor);*/
-
         Element eEditorial = new Element("editorial");
         eEditorial.addContent(String.valueOf((libro.getEditorial().getEditorialID())));
         eLibro.addContent(eEditorial);
@@ -118,15 +115,12 @@ public class LibrosXMLDAO {
                 Libro libroEncontrado = new Libro();
                 libroEncontrado.setLibroID(eLibro.getAttribute("id").getIntValue());
                 libroEncontrado.setTitulo(titulo);
-                List<Element> autoresLibro = eLibro.getChildren("autores");
-                for (Element autores: autoresLibro) {
-                    int id = Integer.parseInt(autores.getChildText("idAutor"));
-                    Autor autorEncontrado = autorXMLDAO.buscar(id);
-                    if (autorEncontrado!=null){
-                        autoresEncontrados.add(autorEncontrado);
-                    }
+                List<Element> eAutores = eLibro.getChild("autores").getChildren("idAutor");
+                for (Element eIdAutor: eAutores) {
+                    AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
+                    Autor autor = autorXMLDAO.buscar(Integer.parseInt(eIdAutor.getText()));
+                    libroEncontrado.getAutores().add(autor);
                 }
-                libroEncontrado.setAutores(autoresEncontrados);
                 libroEncontrado.setEditorial(editorialesXMLDAO.buscar(Integer.parseInt(eLibro.getChildText("editorial"))));
                 libroEncontrado.setTematica(tematicasXMLDAO.buscar(eLibro.getChildText("tematica")));
                 librosEncontrados.add(libroEncontrado);
@@ -143,11 +137,10 @@ public class LibrosXMLDAO {
             Libro libroActual = new Libro();
             libroActual.setLibroID(eLibro.getAttribute("id").getIntValue());
             libroActual.setTitulo(eLibro.getChildText("titulo"));
-            List<Element> eAutores = eLibro.getChildren("autores");
+            List<Element> eAutores = eLibro.getChild("autores").getChildren("idAutor");
             for (Element eIdAutor: eAutores) {
-                AutorXMLDAO autorXMLDAO;
-                autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
-                Autor autor = autorXMLDAO.buscar(Integer.parseInt(eIdAutor.getChildText("idAutor")));
+                AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
+                Autor autor = autorXMLDAO.buscar(Integer.parseInt(eIdAutor.getText()));
                 libroActual.getAutores().add(autor);
             }
           /*  libroActual.setAutor(eLibro.getChildText("autor"));*/
