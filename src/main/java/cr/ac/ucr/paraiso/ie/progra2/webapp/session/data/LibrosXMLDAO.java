@@ -1,7 +1,9 @@
 package cr.ac.ucr.paraiso.ie.progra2.webapp.session.data;
 
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Autor;
+import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Editorial;
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Libro;
+import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Tematica;
 import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
@@ -53,10 +55,6 @@ public class LibrosXMLDAO {
         xmlOutputter.output(this.document, System.out);
     }
 
-    public void close(){
-
-
-    }
 
     public void insertarLibro(Libro libro) throws IOException {
         Element eLibro = new Element("libro");
@@ -104,17 +102,95 @@ public class LibrosXMLDAO {
         guardar();
     }
 
-    public ArrayList<Libro> buscarLibro(String consulta) throws JDOMException, IOException {
+    public ArrayList<Libro> buscarTitulo(String titulo) throws JDOMException, IOException {
         List<Element> eListaLibros = raiz.getChildren("libro");
         ArrayList<Libro> librosEncontrados = new ArrayList<>();
         inicializarXML();
         List<Autor> autoresEncontrados = new ArrayList<Autor>();
         for (Element eLibro : eListaLibros) {
-            String titulo = eLibro.getChildText("titulo");
-            if (titulo.toLowerCase().equals(consulta.toLowerCase())) {
+            String tituloActual = eLibro.getChildText("titulo");
+            if (tituloActual.toLowerCase().equals(titulo.toLowerCase())) {
                 Libro libroEncontrado = new Libro();
                 libroEncontrado.setLibroID(eLibro.getAttribute("id").getIntValue());
-                libroEncontrado.setTitulo(titulo);
+                libroEncontrado.setTitulo(tituloActual);
+                List<Element> eAutores = eLibro.getChild("autores").getChildren("idAutor");
+                for (Element eIdAutor: eAutores) {
+                    AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
+                    Autor autor = autorXMLDAO.buscar(Integer.parseInt(eIdAutor.getText()));
+                    libroEncontrado.getAutores().add(autor);
+                }
+                libroEncontrado.setEditorial(editorialesXMLDAO.buscar(Integer.parseInt(eLibro.getChildText("editorial"))));
+                libroEncontrado.setTematica(tematicasXMLDAO.buscar(eLibro.getChildText("tematica")));
+                librosEncontrados.add(libroEncontrado);
+            }
+
+        }
+        return librosEncontrados;
+    }
+    public ArrayList<Libro> buscarAutor(int idAutor) throws JDOMException, IOException {
+        List<Element> eListaLibros = raiz.getChildren("libro");
+        ArrayList<Libro> librosEncontrados = new ArrayList<>();
+        inicializarXML();
+        List<Autor> autoresEncontrados = new ArrayList<Autor>();
+        for (Element eLibro : eListaLibros) {
+            List<Element> eAutores = eLibro.getChild("autores").getChildren("idAutor");
+            for (Element eIdAutor: eAutores) {
+                if (Integer.parseInt(eIdAutor.getText())==idAutor){
+                    Libro libroEncontrado = new Libro();
+                    libroEncontrado.setLibroID(eLibro.getAttribute("id").getIntValue());
+                    libroEncontrado.setTitulo(eLibro.getChildText("titulo"));
+                    List<Element> eAutoresActuales = eLibro.getChild("autores").getChildren("idAutor");
+                    for (Element eIdAutorActual: eAutoresActuales) {
+                        AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
+                        Autor autor = autorXMLDAO.buscar(Integer.parseInt(eIdAutorActual.getText()));
+                        libroEncontrado.getAutores().add(autor);
+                    }
+                    libroEncontrado.setEditorial(editorialesXMLDAO.buscar(Integer.parseInt(eLibro.getChildText("editorial"))));
+                    libroEncontrado.setTematica(tematicasXMLDAO.buscar(eLibro.getChildText("tematica")));
+                    librosEncontrados.add(libroEncontrado);
+            }
+
+            }
+
+        }
+        return librosEncontrados;
+    }
+    public ArrayList<Libro> buscarTematica(String tematicaBuscada) throws JDOMException, IOException {
+        List<Element> eListaLibros = raiz.getChildren("libro");
+        ArrayList<Libro> librosEncontrados = new ArrayList<>();
+        inicializarXML();
+        List<Autor> autoresEncontrados = new ArrayList<Autor>();
+        for (Element eLibro : eListaLibros) {
+            String tematicaActual = eLibro.getChildText("tematica");
+            if (tematicaActual.toLowerCase().equals(tematicaBuscada.toLowerCase())) {
+                Libro libroEncontrado = new Libro();
+                libroEncontrado.setLibroID(eLibro.getAttribute("id").getIntValue());
+                libroEncontrado.setTitulo(eLibro.getChildText("titulo"));
+                List<Element> eAutores = eLibro.getChild("autores").getChildren("idAutor");
+                for (Element eIdAutor: eAutores) {
+                    AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
+                    Autor autor = autorXMLDAO.buscar(Integer.parseInt(eIdAutor.getText()));
+                    libroEncontrado.getAutores().add(autor);
+                }
+                libroEncontrado.setEditorial(editorialesXMLDAO.buscar(Integer.parseInt(eLibro.getChildText("editorial"))));
+                libroEncontrado.setTematica(tematicasXMLDAO.buscar(eLibro.getChildText("tematica")));
+                librosEncontrados.add(libroEncontrado);
+            }
+
+        }
+        return librosEncontrados;
+    }
+    public ArrayList<Libro> buscarEditorial(String editorialBuscada) throws JDOMException, IOException {
+        List<Element> eListaLibros = raiz.getChildren("libro");
+        ArrayList<Libro> librosEncontrados = new ArrayList<>();
+        inicializarXML();
+        for (Element eLibro : eListaLibros) {
+            int editorialActual = Integer.parseInt(eLibro.getChildText("editorial"));
+            Editorial editorial = editorialesXMLDAO.buscar(editorialActual);
+            if (editorial.getNombreEditorial().equals(editorialBuscada)) {
+                Libro libroEncontrado = new Libro();
+                libroEncontrado.setLibroID(eLibro.getAttribute("id").getIntValue());
+                libroEncontrado.setTitulo(eLibro.getChildText("titulo"));
                 List<Element> eAutores = eLibro.getChild("autores").getChildren("idAutor");
                 for (Element eIdAutor: eAutores) {
                     AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");

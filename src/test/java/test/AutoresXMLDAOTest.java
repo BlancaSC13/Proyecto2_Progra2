@@ -26,7 +26,7 @@ public class AutoresXMLDAOTest {
 
     @Test
     public void probarXML(){
-
+        System.out.println(autoresXMLDAO.buscarNombre("J.k Rowilling"));
 
     }
 

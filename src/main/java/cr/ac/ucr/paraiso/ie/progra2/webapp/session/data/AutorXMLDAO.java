@@ -77,6 +77,19 @@ public class AutorXMLDAO {
         }
         return autor;
     }
+    public Autor buscarNombre(String nombre){
+        List<Element> eAutores = raiz.getChildren();
+        Autor autor = new Autor();
+        for (Element eAutor: eAutores ) {
+            String nombreCompleto = eAutor.getChildText("nombre") + " " + eAutor.getChildText("apellido");
+            if (nombreCompleto.equals(nombre)){
+                autor.setAutorID(Integer.parseInt( eAutor.getAttributeValue("id") ));
+                autor.setNombreAutor(eAutor.getChildText("nombre"));
+                autor.setApellidoAutor(eAutor.getChildText("apellido"));
+            }
+        }
+        return autor;
+    }
 
     public ArrayList<Autor> getAutores() throws DataConversionException {
         List eListaAutores = raiz.getChildren();
