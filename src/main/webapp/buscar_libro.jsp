@@ -1,3 +1,10 @@
+
+<%@page import="java.util.List"%>
+<%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Editorial" %>
+<%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Tematica" %>
+<%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Autor" %>
+<%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Libro" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -39,11 +46,13 @@
             <th>Autores</th>
             <th>Acción</th>
         </tr>
-        </thead>
+        </thead>  <% List<Libro> libros =
+            (List<Libro>)request.getAttribute("libros"); %>
         <tbody>
+
         <% for (Libro libroActual : libros) { %>
         <tr>
-            <td><%= libroActual.getIdLibro() %></td>
+            <td><%= libroActual.getLibroID() %></td>
             <td><%= libroActual.getISBN() %></td>
             <td><%= libroActual.getTitulo() %></td>
             <td><%= libroActual.getEditorial() %></td>

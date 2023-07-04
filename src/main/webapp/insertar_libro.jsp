@@ -1,12 +1,32 @@
+<%@page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Libro" %>
+<%@page import="java.util.List" %>
+<%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Editorial" %>
+<%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Tematica" %>
+<%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Autor" %>
+<%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.TematicasXMLDAO" %>
+<%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.EditorialesXMLDAO" %>
+<%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.AutorXMLDAO" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Ingresar un libro</title>
+    <% TematicasXMLDAO tematicasXmlDao = TematicasXMLDAO.abrirDocumento("tematicas.xml");
+        List<Tematica> tematicass = tematicasXmlDao.getTematicas(); %>
+
+    <%
+        EditorialesXMLDAO editorialesXMLDAO = EditorialesXMLDAO.abrirDocumento("editoriales.xml");
+        List<Editorial> editoriales = editorialesXMLDAO.getEditoriales(); %>
+
+    <%
+        AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
+        List<Autor> autoress = autorXMLDAO.getAutores(); %>
+
 
     <style>
         body {
-            background-color:#f5f5dc;
+            background-color: #f5f5dc;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -53,32 +73,44 @@
 </head>
 <body>
 <div id="form-container">
-    <h1>Ingresar un libro</h1>
+    <%--@declare id="tematicas"--%><h1>Ingresar un libro</h1>
     <label for="id"><span>Id:</span><input type="text" id="id"/></label>
     <label for="isbn"><span>ISBN:</span><input type="text" id="isbn"/></label>
     <label for="titulo"><span>Título:</span><input type="text" id="titulo"/></label>
+
+        <% List<Editorial> editorialess = (List<Editorial>) request.getAttribute("editoriales"); %>
+
+
+<%System.out.println("2" +editoriales);%>
     <label for="editorial"><span>Editorial:</span>
         <select id="editorial">
-            <option value="editorial1">Editorial 1</option>
-            <option value="editorial2">Editorial 2</option>
-            <option value="editorial3">Editorial 3</option>
+            <%System.out.println("2" +editoriales);
+                for (Editorial editorial : editoriales) {%>
+            <option value="<%= editorial.getEditorialID() %>"><%= editorial.getNombreEditorial() %>
+            </option>
+            <% } %>
         </select>
     </label>
-    <label for="tematica"><span>Temática:</span>
-        <select id="tematica">
-            <option value="tematica1">Temática 1</option>
-            <option value="tematica2">Temática 2</option>
-            <option value="tematica3">Temática 3</option>
-        </select>
+
+    <label for="tematicas">Temática:
+    <select style="width:300px" border="1px" name="tematicas">
+        <% for (Tematica tematica : tematicass) {%>
+        <option value="<%= tematica.getNombreTematica() %>"><%= tematica.getNombreTematica() %>
+        </option>
+        <% } %>
+    </select>
     </label>
+
     <label for="autores"><span>Autor/es:</span>
+
         <select id="autores">
-            <option value="autor1">Autor 1</option>
-            <option value="autor2">Autor 2</option>
-            <option value="autor3">Autor 3</option>
+            <% for (Autor autor : autoress) {%>
+            <option value="<%= autor.getAutorID() %>"><%= autor.getNombreAutor() %>
+            </option>
+            <% } %>
         </select>
         <button id="btn-agregar-autor">Agregar Autor</button>
-        <input type="submit" value="Agregar Autor"  class="btn btn-success" >
+        <input type="submit" value="Agregar Autor" class="btn btn-success">
     </label>
     <label for="estado"><span>Estado:</span>
         <select id="estado">
@@ -87,7 +119,7 @@
             <option value="estado3">Estado 3</option>
         </select>
     </label>
-    <input type="submit" value="Añadir Libro"  class="btn btn-success" >
+    <input type="submit" value="Añadir Libro" class="btn btn-success">
 </div>
 
 <table id="authors-table">
