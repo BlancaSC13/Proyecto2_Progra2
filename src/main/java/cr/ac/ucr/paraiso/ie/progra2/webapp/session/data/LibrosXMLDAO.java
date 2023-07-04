@@ -64,6 +64,10 @@ public class LibrosXMLDAO {
         eTitulo.addContent(libro.getTitulo());
         eLibro.addContent(eTitulo);
 
+        Element eISBN = new Element("isbn");
+        eISBN.addContent(String.valueOf(libro.getISBN()));
+        eLibro.addContent(eISBN);
+
         Element eAutores = new Element("autores");
         for (Autor autor: libro.getAutores()) {
             Element eAutor = new Element("idAutor");
@@ -112,6 +116,7 @@ public class LibrosXMLDAO {
             if (tituloActual.toLowerCase().equals(titulo.toLowerCase())) {
                 Libro libroEncontrado = new Libro();
                 libroEncontrado.setLibroID(eLibro.getAttribute("id").getIntValue());
+                libroEncontrado.setISBN(Integer.parseInt(eLibro.getChildText("isbn")));
                 libroEncontrado.setTitulo(tituloActual);
                 List<Element> eAutores = eLibro.getChild("autores").getChildren("idAutor");
                 for (Element eIdAutor: eAutores) {
@@ -138,6 +143,7 @@ public class LibrosXMLDAO {
                 if (Integer.parseInt(eIdAutor.getText())==idAutor){
                     Libro libroEncontrado = new Libro();
                     libroEncontrado.setLibroID(eLibro.getAttribute("id").getIntValue());
+                    libroEncontrado.setISBN(Integer.parseInt(eLibro.getChildText("isbn")));
                     libroEncontrado.setTitulo(eLibro.getChildText("titulo"));
                     List<Element> eAutoresActuales = eLibro.getChild("autores").getChildren("idAutor");
                     for (Element eIdAutorActual: eAutoresActuales) {
@@ -165,6 +171,7 @@ public class LibrosXMLDAO {
             if (tematicaActual.toLowerCase().equals(tematicaBuscada.toLowerCase())) {
                 Libro libroEncontrado = new Libro();
                 libroEncontrado.setLibroID(eLibro.getAttribute("id").getIntValue());
+                libroEncontrado.setISBN(Integer.parseInt(eLibro.getChildText("isbn")));
                 libroEncontrado.setTitulo(eLibro.getChildText("titulo"));
                 List<Element> eAutores = eLibro.getChild("autores").getChildren("idAutor");
                 for (Element eIdAutor: eAutores) {
@@ -190,6 +197,7 @@ public class LibrosXMLDAO {
             if (editorial.getNombreEditorial().equals(editorialBuscada)) {
                 Libro libroEncontrado = new Libro();
                 libroEncontrado.setLibroID(eLibro.getAttribute("id").getIntValue());
+                libroEncontrado.setISBN(Integer.parseInt(eLibro.getChildText("isbn")));
                 libroEncontrado.setTitulo(eLibro.getChildText("titulo"));
                 List<Element> eAutores = eLibro.getChild("autores").getChildren("idAutor");
                 for (Element eIdAutor: eAutores) {
@@ -212,6 +220,7 @@ public class LibrosXMLDAO {
         for (Element eLibro : eLibros) {
             Libro libroActual = new Libro();
             libroActual.setLibroID(eLibro.getAttribute("id").getIntValue());
+            libroActual.setISBN(Integer.parseInt(eLibro.getChildText("isbn")));
             libroActual.setTitulo(eLibro.getChildText("titulo"));
             List<Element> eAutores = eLibro.getChild("autores").getChildren("idAutor");
             for (Element eIdAutor: eAutores) {

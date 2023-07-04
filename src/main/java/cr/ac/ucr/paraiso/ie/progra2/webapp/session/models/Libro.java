@@ -6,6 +6,7 @@ import java.util.List;
 public class Libro {
 
     private int libroID;
+    private int ISBN;
     private String titulo;
     private List<Autor> autores;
     private Editorial editorial;
@@ -18,8 +19,9 @@ public class Libro {
         tematica = new Tematica();
     }
 
-    public Libro(String titulo, List<Autor> autores, Editorial editorial, Tematica tematica) {
+    public Libro(int ISBN, String titulo, List<Autor> autores, Editorial editorial, Tematica tematica) {
         this.libroID = contador;
+        this.ISBN = ISBN;
         this.titulo = titulo;
         this.autores = autores;
         this.editorial = editorial;
@@ -67,10 +69,19 @@ public class Libro {
         this.tematica = tematica;
     }
 
+    public int getISBN() {
+        return ISBN;
+    }
+
+    public void setISBN(int ISBN) {
+        this.ISBN = ISBN;
+    }
+
     @Override
     public String toString() {
         return "Libro{" +
                 "libroID=" + libroID +
+                ", ISBN=" + ISBN +
                 ", titulo='" + titulo + '\'' +
                 ", autores=" + autores +
                 ", editorial=" + editorial +

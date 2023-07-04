@@ -1,2 +1,4 @@
-test\CursoXMLDAOTest.class
-test\ProfesoresXMLDAOTest.class
+test\EditorialesXMLDAOTest.class
+test\AutoresXMLDAOTest.class
+test\LibrosXMLDAOTest.class
+test\TematicasXMLDAOTest.class
