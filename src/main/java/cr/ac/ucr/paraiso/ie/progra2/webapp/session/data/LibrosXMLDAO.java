@@ -235,7 +235,17 @@ public class LibrosXMLDAO {
         }
         return libros;
     }
-
+    public boolean buscar(int idLibro) throws JDOMException, IOException {
+        List<Element> eListaLibros = raiz.getChildren("libro");
+        inicializarXML();
+        for (Element eLibro : eListaLibros) {
+            int idBuscando = Integer.parseInt(eLibro.getChildText("id"));
+            if (idBuscando == idLibro) {
+                return true;
+            }
+        }
+        return false;
+    }
     private void inicializarXML() throws IOException, JDOMException {
         autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
         tematicasXMLDAO = TematicasXMLDAO.abrirDocumento("tematicas.xml");
