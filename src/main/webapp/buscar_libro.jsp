@@ -4,6 +4,10 @@
 <%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Tematica" %>
 <%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Autor" %>
 <%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Libro" %>
+<%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.LibrosXMLDAO" %>
+<%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.EditorialesXMLDAO" %>
+<%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.AutorXMLDAO" %>
+<%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.TematicasXMLDAO" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
@@ -43,19 +47,33 @@
             <th>ISBN</th>
             <th>Título</th>
             <th>Editorial</th>
+            <th>Tematica</th>
             <th>Autores</th>
             <th>Acción</th>
         </tr>
-        </thead>  <% List<Libro> libros =
-            (List<Libro>)request.getAttribute("libros"); %>
+        </thead>
+
+        <% LibrosXMLDAO librosXmlDao = LibrosXMLDAO.abrirDocumento("libros.xml");
+            List<Libro> libros1 = librosXmlDao.getLibros();%>
+
+        <% EditorialesXMLDAO editorialesXMLDAO = EditorialesXMLDAO.abrirDocumento("editoriales.xml");
+            List<Editorial> editoriales = editorialesXMLDAO.getEditoriales();%>
+
+        <% AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
+            List<Autor> autores = autorXMLDAO.getAutores();%>
+
+        <% TematicasXMLDAO tematicasXMLDAO = TematicasXMLDAO.abrirDocumento("tematicas.xml");
+            List<Tematica> tematicas = tematicasXMLDAO.getTematicas();%>
+
         <tbody>
 
-        <% for (Libro libroActual : libros) { %>
+        <% for (Libro libroActual : libros1) { %>
         <tr>
             <td><%= libroActual.getLibroID() %></td>
             <td><%= libroActual.getISBN() %></td>
             <td><%= libroActual.getTitulo() %></td>
             <td><%= libroActual.getEditorial() %></td>
+            <td><%= libroActual.getTematica() %></td>
             <td><%= libroActual.getAutores() %></td>
             <td><a href="/session-webapp/libros">M</a></td>
         </tr>
