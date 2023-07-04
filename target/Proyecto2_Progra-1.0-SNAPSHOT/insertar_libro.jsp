@@ -128,6 +128,7 @@
         <th>idAutor</th>
         <th>Nombre</th>
         <th>Apellido</th>
+        <th>Eliminar</th>
     </tr>
     </thead>
     <tbody>
@@ -135,18 +136,28 @@
         <td>1</td>
         <td>Nombre Autor 1</td>
         <td>Apellido Autor 1</td>
+        <td><button onclick="eliminarElemento(this)">Eliminar</button></td>
     </tr>
     <tr>
         <td>2</td>
         <td>Nombre Autor 2</td>
         <td>Apellido Autor 2</td>
+        <td><button onclick="eliminarElemento(this)">Eliminar</button></td>
     </tr>
     <tr>
         <td>3</td>
         <td>Nombre Autor 3</td>
         <td>Apellido Autor 3</td>
+        <td><button onclick="eliminarElemento(this)">Eliminar</button></td>
     </tr>
     </tbody>
 </table>
+
+<script>
+    function eliminarElemento(boton) {
+        var fila = boton.parentNode.parentNode;
+        fila.parentNode.removeChild(fila);
+    }
+</script>
 </body>
 </html>
