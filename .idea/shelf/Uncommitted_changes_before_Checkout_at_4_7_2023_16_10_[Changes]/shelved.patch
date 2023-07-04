@@ -1,0 +1,31 @@
+Index: src/main/webapp/buscar_libro.jsp
+===================================================================
+diff --git a/src/main/webapp/buscar_libro.jsp b/src/main/webapp/buscar_libro.jsp
+--- a/src/main/webapp/buscar_libro.jsp	
++++ b/src/main/webapp/buscar_libro.jsp	
+@@ -54,7 +54,7 @@
+         </thead>
+ 
+         <% LibrosXMLDAO librosXmlDao = LibrosXMLDAO.abrirDocumento("libros.xml");
+-            List<Libro> libros1 = librosXmlDao.getLibros();%>
++            List<Libro> libros = librosXmlDao.getLibros();%>
+ 
+         <% EditorialesXMLDAO editorialesXMLDAO = EditorialesXMLDAO.abrirDocumento("editoriales.xml");
+             List<Editorial> editoriales = editorialesXMLDAO.getEditoriales();%>
+@@ -67,13 +67,13 @@
+ 
+         <tbody>
+ 
+-        <% for (Libro libroActual : libros1) { %>
++        <% for (Libro libroActual : libros) { %>
+         <tr>
+             <td><%= libroActual.getLibroID() %></td>
+             <td><%= libroActual.getISBN() %></td>
+             <td><%= libroActual.getTitulo() %></td>
+-            <td><%= libroActual.getEditorial() %></td>
+-            <td><%= libroActual.getTematica() %></td>
++            <td><%= libroActual.getEditorial().getNombreEditorial() %></td>
++            <td><%= libroActual.getTematica().getNombreTematica() %></td>
+             <td><%= libroActual.getAutores() %></td>
+             <td><a href="/session-webapp/libros">M</a></td>
+         </tr>

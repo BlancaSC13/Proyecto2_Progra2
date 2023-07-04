@@ -1,0 +1,930 @@
+Index: src/test/java/test/LibrosXMLDAOTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/test/LibrosXMLDAOTest.java b/src/test/java/test/LibrosXMLDAOTest.java
+--- a/src/test/java/test/LibrosXMLDAOTest.java	
++++ b/src/test/java/test/LibrosXMLDAOTest.java	
+@@ -1,11 +1,14 @@
+ package test;
+ 
++import cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.CursoXMLDAO;
+ import cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.LibrosXMLDAO;
+ import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.*;
+ import org.jdom2.DataConversionException;
+ import org.jdom2.JDOMException;
+ 
++import org.junit.Before;
+ import org.junit.Test;
++import org.junit.jupiter.api.BeforeEach;
+ 
+ 
+ import java.io.IOException;
+@@ -18,11 +21,6 @@
+     public void probarXML() throws IOException, JDOMException {
+         crear();
+         librosXMLDAO = LibrosXMLDAO.abrirDocumento("libros.xml");
+-        try {
+-            System.out.println(librosXMLDAO.buscarTitulo("harry potter"));
+-        } catch (DataConversionException e) {
+-            throw new RuntimeException(e);
+-        }
+ 
+     }
+ 
+@@ -38,34 +36,32 @@
+     public void eliminarLibro() throws IOException, JDOMException {
+         crear();
+         librosXMLDAO.eliminarLibro(1);
+-    }
+-    @Test
+-    public void buscarPorAutor () throws IOException, JDOMException {
+-        crear();
+-        System.out.println(librosXMLDAO.buscarAutor(2));
++
+     }
+-    @Test
+-    public void buscarPorTematica () throws IOException, JDOMException {
+-        crear();
+-        System.out.println(librosXMLDAO.buscarTematica("Ficción"));
+-    }
+-    @Test
+-    public void buscarPorEditorial () throws IOException, JDOMException {
+-        crear();
+-        System.out.println(librosXMLDAO.buscarEditorial("Planeta"));
+-    }
++
+     private void crear() throws IOException {
+         librosXMLDAO = LibrosXMLDAO.crearDocumento("libros.xml");
+         // librosXMLDAO = LibrosXMLDAO.abrirDocumento("libros.xml");
+ 
+-        List<Autor> autores = new ArrayList<>();
++        List<Autor> autores = new ArrayList<Autor>();
+         autores.add( new Autor("J.k", "Rowlling"));
+         autores.add( new Autor("Gabriel", "García"));
+ 
+-        Libro libro = new Libro("harry potter", autores,
++        List<Autor> autores2 = new ArrayList<Autor>();
++        autores2.add( new Autor("Fran", "Kafka"));
++
++
++        Libro libro = new Libro(2345,"harry potter", autores,
+                 new Editorial("Planeta"),
+                 new Tematica("Ficción"));
+         librosXMLDAO.insertarLibro(libro);
++
++
++
++
++
++        Libro libro1 = new Libro(5678,"La Metamorfosis", autores2, new Editorial("Wiley"), new Tematica("Novela"));
++        librosXMLDAO.insertarLibro(libro1);
+     }
+ 
+ 
+Index: src/test/java/test/AutoresXMLDAOTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/test/AutoresXMLDAOTest.java b/src/test/java/test/AutoresXMLDAOTest.java
+--- a/src/test/java/test/AutoresXMLDAOTest.java	
++++ b/src/test/java/test/AutoresXMLDAOTest.java	
+@@ -19,6 +19,7 @@
+ 
+         autoresXMLDAO.insertarAutores( new Autor("J.k", "Rowilling"));
+         autoresXMLDAO.insertarAutores( new Autor("Gabriel", "García"));
++        autoresXMLDAO.insertarAutores( new Autor("Fran", "Kafka"));
+ 
+ 
+ 
+Index: src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/data/AutorXMLDAO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/data/AutorXMLDAO.java b/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/data/AutorXMLDAO.java
+--- a/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/data/AutorXMLDAO.java	
++++ b/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/data/AutorXMLDAO.java	
+@@ -47,7 +47,7 @@
+         xmlOutputter.setFormat(Format.getPrettyFormat());
+         xmlOutputter.output(this.document, new FileWriter(this.rutaDocumento));
+         //Extra para revisión
+-       // xmlOutputter.output(this.document, System.out);
++        xmlOutputter.output(this.document, System.out);
+     }
+ 
+     public void insertarAutores(Autor autor) throws IOException {
+@@ -91,21 +91,6 @@
+         return autor;
+     }
+ 
+-    public void modificarAutor(Autor autor) throws IOException {
+-        List<Element> eAutores = raiz.getChildren();
+-
+-        for (Element eAutor : eAutores) {
+-            if (Integer.parseInt(eAutor.getAttributeValue("id")) == autor.getAutorID()) {
+-                eAutor.getChild("nombre").setText(autor.getNombreAutor());
+-                eAutor.getChild("apellido").setText(autor.getApellidoAutor());
+-                break;
+-            }
+-        }
+-
+-        guardar();
+-    }
+-
+-
+     public ArrayList<Autor> getAutores() throws DataConversionException {
+         List eListaAutores = raiz.getChildren();
+         ArrayList<Autor> autores = new ArrayList<Autor>();
+Index: src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/data/LibrosXMLDAO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/data/LibrosXMLDAO.java b/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/data/LibrosXMLDAO.java
+--- a/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/data/LibrosXMLDAO.java	
++++ b/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/data/LibrosXMLDAO.java	
+@@ -64,6 +64,10 @@
+         eTitulo.addContent(libro.getTitulo());
+         eLibro.addContent(eTitulo);
+ 
++        Element eISBN = new Element("isbn");
++        eISBN.addContent(String.valueOf(libro.getISBN()));
++        eLibro.addContent(eISBN);
++
+         Element eAutores = new Element("autores");
+         for (Autor autor: libro.getAutores()) {
+             Element eAutor = new Element("idAutor");
+@@ -112,6 +116,7 @@
+             if (tituloActual.toLowerCase().equals(titulo.toLowerCase())) {
+                 Libro libroEncontrado = new Libro();
+                 libroEncontrado.setLibroID(eLibro.getAttribute("id").getIntValue());
++                libroEncontrado.setISBN(Integer.parseInt(eLibro.getChildText("isbn")));
+                 libroEncontrado.setTitulo(tituloActual);
+                 List<Element> eAutores = eLibro.getChild("autores").getChildren("idAutor");
+                 for (Element eIdAutor: eAutores) {
+@@ -138,6 +143,7 @@
+                 if (Integer.parseInt(eIdAutor.getText())==idAutor){
+                     Libro libroEncontrado = new Libro();
+                     libroEncontrado.setLibroID(eLibro.getAttribute("id").getIntValue());
++                    libroEncontrado.setISBN(Integer.parseInt(eLibro.getChildText("isbn")));
+                     libroEncontrado.setTitulo(eLibro.getChildText("titulo"));
+                     List<Element> eAutoresActuales = eLibro.getChild("autores").getChildren("idAutor");
+                     for (Element eIdAutorActual: eAutoresActuales) {
+@@ -148,7 +154,7 @@
+                     libroEncontrado.setEditorial(editorialesXMLDAO.buscar(Integer.parseInt(eLibro.getChildText("editorial"))));
+                     libroEncontrado.setTematica(tematicasXMLDAO.buscar(eLibro.getChildText("tematica")));
+                     librosEncontrados.add(libroEncontrado);
+-            }
++                }
+ 
+             }
+ 
+@@ -165,6 +171,7 @@
+             if (tematicaActual.toLowerCase().equals(tematicaBuscada.toLowerCase())) {
+                 Libro libroEncontrado = new Libro();
+                 libroEncontrado.setLibroID(eLibro.getAttribute("id").getIntValue());
++                libroEncontrado.setISBN(Integer.parseInt(eLibro.getChildText("isbn")));
+                 libroEncontrado.setTitulo(eLibro.getChildText("titulo"));
+                 List<Element> eAutores = eLibro.getChild("autores").getChildren("idAutor");
+                 for (Element eIdAutor: eAutores) {
+@@ -190,6 +197,7 @@
+             if (editorial.getNombreEditorial().equals(editorialBuscada)) {
+                 Libro libroEncontrado = new Libro();
+                 libroEncontrado.setLibroID(eLibro.getAttribute("id").getIntValue());
++                libroEncontrado.setISBN(Integer.parseInt(eLibro.getChildText("isbn")));
+                 libroEncontrado.setTitulo(eLibro.getChildText("titulo"));
+                 List<Element> eAutores = eLibro.getChild("autores").getChildren("idAutor");
+                 for (Element eIdAutor: eAutores) {
+@@ -218,7 +226,7 @@
+         return false;
+     }
+ 
+-    public void modificarLibro(Libro libroModificado) throws IOException {
++   /* public void modificarLibro(Libro libroModificado) throws IOException {
+         List<Element> eListaLibros = raiz.getChildren("libro");
+ 
+         for (Element eLibro : eListaLibros) {
+@@ -252,7 +260,7 @@
+         }
+ 
+         guardar();
+-    }
++    }*/
+ 
+     public ArrayList<Libro> getLibros() throws JDOMException, IOException {
+         List<Element> eLibros = raiz.getChildren();
+@@ -261,6 +269,7 @@
+         for (Element eLibro : eLibros) {
+             Libro libroActual = new Libro();
+             libroActual.setLibroID(eLibro.getAttribute("id").getIntValue());
++            libroActual.setISBN(Integer.parseInt(eLibro.getChildText("isbn")));
+             libroActual.setTitulo(eLibro.getChildText("titulo"));
+             List<Element> eAutores = eLibro.getChild("autores").getChildren("idAutor");
+             for (Element eIdAutor: eAutores) {
+@@ -268,9 +277,9 @@
+                 Autor autor = autorXMLDAO.buscar(Integer.parseInt(eIdAutor.getText()));
+                 libroActual.getAutores().add(autor);
+             }
+-          /*  libroActual.setAutor(eLibro.getChildText("autor"));*/
+-           libroActual.setEditorial(editorialesXMLDAO.buscar(Integer.parseInt(eLibro.getChildText("editorial"))));
+-           libroActual.setTematica(tematicasXMLDAO.buscar(eLibro.getChildText("tematica")));
++            /*  libroActual.setAutor(eLibro.getChildText("autor"));*/
++            libroActual.setEditorial(editorialesXMLDAO.buscar(Integer.parseInt(eLibro.getChildText("editorial"))));
++            libroActual.setTematica(tematicasXMLDAO.buscar(eLibro.getChildText("tematica")));
+             libros.add(libroActual);
+         }
+         return libros;
+Index: src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Libro.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Libro.java b/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Libro.java
+--- a/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Libro.java	
++++ b/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Libro.java	
+@@ -6,6 +6,7 @@
+ public class Libro {
+ 
+     private int libroID;
++    private int ISBN;
+     private String titulo;
+     private List<Autor> autores;
+     private Editorial editorial;
+@@ -18,8 +19,9 @@
+         tematica = new Tematica();
+     }
+ 
+-    public Libro(String titulo, List<Autor> autores, Editorial editorial, Tematica tematica) {
++    public Libro(int ISBN, String titulo, List<Autor> autores, Editorial editorial, Tematica tematica) {
+         this.libroID = contador;
++        this.ISBN = ISBN;
+         this.titulo = titulo;
+         this.autores = autores;
+         this.editorial = editorial;
+@@ -67,10 +69,19 @@
+         this.tematica = tematica;
+     }
+ 
++    public int getISBN() {
++        return ISBN;
++    }
++
++    public void setISBN(int ISBN) {
++        this.ISBN = ISBN;
++    }
++
+     @Override
+     public String toString() {
+         return "Libro{" +
+                 "libroID=" + libroID +
++                ", ISBN=" + ISBN +
+                 ", titulo='" + titulo + '\'' +
+                 ", autores=" + autores +
+                 ", editorial=" + editorial +
+Index: .idea/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+deleted file mode 100644
+--- a/.idea/.gitignore	
++++ /dev/null	
+@@ -1,3 +0,0 @@
+-# Default ignored files
+-/shelf/
+-/workspace.xml
+Index: .idea/git_toolbox_prj.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/git_toolbox_prj.xml b/.idea/git_toolbox_prj.xml
+deleted file mode 100644
+--- a/.idea/git_toolbox_prj.xml	
++++ /dev/null	
+@@ -1,15 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="GitToolBoxProjectSettings">
+-    <option name="commitMessageIssueKeyValidationOverride">
+-      <BoolValueOverride>
+-        <option name="enabled" value="true" />
+-      </BoolValueOverride>
+-    </option>
+-    <option name="commitMessageValidationEnabledOverride">
+-      <BoolValueOverride>
+-        <option name="enabled" value="true" />
+-      </BoolValueOverride>
+-    </option>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/uiDesigner.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/uiDesigner.xml b/.idea/uiDesigner.xml
+deleted file mode 100644
+--- a/.idea/uiDesigner.xml	
++++ /dev/null	
+@@ -1,124 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="Palette2">
+-    <group name="Swing">
+-      <item class="com.intellij.uiDesigner.HSpacer" tooltip-text="Horizontal Spacer" icon="/com/intellij/uiDesigner/icons/hspacer.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="1" hsize-policy="6" anchor="0" fill="1" />
+-      </item>
+-      <item class="com.intellij.uiDesigner.VSpacer" tooltip-text="Vertical Spacer" icon="/com/intellij/uiDesigner/icons/vspacer.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="1" anchor="0" fill="2" />
+-      </item>
+-      <item class="javax.swing.JPanel" icon="/com/intellij/uiDesigner/icons/panel.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3" />
+-      </item>
+-      <item class="javax.swing.JScrollPane" icon="/com/intellij/uiDesigner/icons/scrollPane.svg" removable="false" auto-create-binding="false" can-attach-label="true">
+-        <default-constraints vsize-policy="7" hsize-policy="7" anchor="0" fill="3" />
+-      </item>
+-      <item class="javax.swing.JButton" icon="/com/intellij/uiDesigner/icons/button.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="3" anchor="0" fill="1" />
+-        <initial-values>
+-          <property name="text" value="Button" />
+-        </initial-values>
+-      </item>
+-      <item class="javax.swing.JRadioButton" icon="/com/intellij/uiDesigner/icons/radioButton.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
+-        <initial-values>
+-          <property name="text" value="RadioButton" />
+-        </initial-values>
+-      </item>
+-      <item class="javax.swing.JCheckBox" icon="/com/intellij/uiDesigner/icons/checkBox.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
+-        <initial-values>
+-          <property name="text" value="CheckBox" />
+-        </initial-values>
+-      </item>
+-      <item class="javax.swing.JLabel" icon="/com/intellij/uiDesigner/icons/label.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="0" anchor="8" fill="0" />
+-        <initial-values>
+-          <property name="text" value="Label" />
+-        </initial-values>
+-      </item>
+-      <item class="javax.swing.JTextField" icon="/com/intellij/uiDesigner/icons/textField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
+-          <preferred-size width="150" height="-1" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JPasswordField" icon="/com/intellij/uiDesigner/icons/passwordField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
+-          <preferred-size width="150" height="-1" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JFormattedTextField" icon="/com/intellij/uiDesigner/icons/formattedTextField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
+-          <preferred-size width="150" height="-1" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JTextArea" icon="/com/intellij/uiDesigner/icons/textArea.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JTextPane" icon="/com/intellij/uiDesigner/icons/textPane.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JEditorPane" icon="/com/intellij/uiDesigner/icons/editorPane.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JComboBox" icon="/com/intellij/uiDesigner/icons/comboBox.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="2" anchor="8" fill="1" />
+-      </item>
+-      <item class="javax.swing.JTable" icon="/com/intellij/uiDesigner/icons/table.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JList" icon="/com/intellij/uiDesigner/icons/list.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="2" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JTree" icon="/com/intellij/uiDesigner/icons/tree.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JTabbedPane" icon="/com/intellij/uiDesigner/icons/tabbedPane.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
+-          <preferred-size width="200" height="200" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JSplitPane" icon="/com/intellij/uiDesigner/icons/splitPane.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
+-          <preferred-size width="200" height="200" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JSpinner" icon="/com/intellij/uiDesigner/icons/spinner.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
+-      </item>
+-      <item class="javax.swing.JSlider" icon="/com/intellij/uiDesigner/icons/slider.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
+-      </item>
+-      <item class="javax.swing.JSeparator" icon="/com/intellij/uiDesigner/icons/separator.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3" />
+-      </item>
+-      <item class="javax.swing.JProgressBar" icon="/com/intellij/uiDesigner/icons/progressbar.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1" />
+-      </item>
+-      <item class="javax.swing.JToolBar" icon="/com/intellij/uiDesigner/icons/toolbar.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1">
+-          <preferred-size width="-1" height="20" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JToolBar$Separator" icon="/com/intellij/uiDesigner/icons/toolbarSeparator.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="0" anchor="0" fill="1" />
+-      </item>
+-      <item class="javax.swing.JScrollBar" icon="/com/intellij/uiDesigner/icons/scrollbar.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="0" anchor="0" fill="2" />
+-      </item>
+-    </group>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: src/test/java/test/TematicasXMLDAOTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/test/TematicasXMLDAOTest.java b/src/test/java/test/TematicasXMLDAOTest.java
+--- a/src/test/java/test/TematicasXMLDAOTest.java	
++++ b/src/test/java/test/TematicasXMLDAOTest.java	
+@@ -29,11 +29,7 @@
+ 
+     @Test
+     public void probar(){
+-        try {
+-            System.out.println(tematicasXMLDAO.buscar("Aventura"));
+-        } catch (DataConversionException e) {
+-            throw new RuntimeException(e);
+-        }
++        //  System.out.println(tematicasXMLDAO.buscar("Aventura"));
+     }
+ 
+ 
+Index: src/test/java/test/CursoXMLDAOTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/test/CursoXMLDAOTest.java b/src/test/java/test/CursoXMLDAOTest.java
+--- a/src/test/java/test/CursoXMLDAOTest.java	
++++ b/src/test/java/test/CursoXMLDAOTest.java	
+@@ -46,11 +46,11 @@
+     public void eliminarXML(){
+         try {
+             cursoXLMDAO.eliminarCurso(400);
+-            System.out.println("Impresión cursos insertados");
++          //  System.out.println("Impresión cursos insertados");
+             ArrayList<Curso> cursos = cursoXLMDAO.getCursos();
+             for (Iterator<Curso> cursoActual = cursos.iterator(); cursoActual.hasNext();) {
+                 Curso curso = cursoActual.next();
+-                System.out.println(curso.getId() + " - " + curso.getNombre());
++            //    System.out.println(curso.getId() + " - " + curso.getNombre());
+             }
+ 
+         } catch (IOException e) {
+Index: src/test/java/test/ProfesoresXMLDAOTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/test/ProfesoresXMLDAOTest.java b/src/test/java/test/ProfesoresXMLDAOTest.java
+--- a/src/test/java/test/ProfesoresXMLDAOTest.java	
++++ b/src/test/java/test/ProfesoresXMLDAOTest.java	
+@@ -29,7 +29,7 @@
+ 
+ 
+ 
+-        System.out.println("Impresión cursos insertados");
++     //   System.out.println("Impresión cursos insertados");
+         ArrayList<Profesor> profesors = profesorXMLDAO.getProfesores();
+         for (Iterator<Profesor> profesorActual = profesors.iterator(); profesorActual.hasNext();) {
+             Profesor profesor3 = profesorActual.next();
+Index: src/test/java/test/EditorialesXMLDAOTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/test/EditorialesXMLDAOTest.java b/src/test/java/test/EditorialesXMLDAOTest.java
+--- a/src/test/java/test/EditorialesXMLDAOTest.java	
++++ b/src/test/java/test/EditorialesXMLDAOTest.java	
+@@ -29,7 +29,7 @@
+     @Test
+     public void probar() throws DataConversionException {
+         System.out.println(editorialesXMLDAO.buscar(5));
+-
++        System.out.println(editorialesXMLDAO.getEditoriales());
+     }
+ 
+ 
+Index: target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst b/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
+--- a/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst	
++++ b/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst	
+@@ -1,2 +1,4 @@
+ test\CursoXMLDAOTest.class
++test\EditorialesXMLDAOTest.class
+ test\ProfesoresXMLDAOTest.class
++test\TematicasXMLDAOTest.class
+Index: target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst b/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
+--- a/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst	
++++ b/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst	
+@@ -1,2 +1,6 @@
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\test\java\test\CursoXMLDAOTest.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\test\java\test\ProfesoresXMLDAOTest.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\test\java\test\AutoresXMLDAOTest.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\test\java\test\TematicasXMLDAOTest.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\test\java\test\ProfesoresXMLDAOTest.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\test\java\test\EditorialesXMLDAOTest.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\test\java\test\CursoXMLDAOTest.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\test\java\test\LibrosXMLDAOTest.java
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	
++++ b/.idea/misc.xml	
+@@ -11,5 +11,5 @@
+       </list>
+     </option>
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_19" default="true" project-jdk-name="19" project-jdk-type="JavaSDK" />
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_19" project-jdk-name="openjdk-20" project-jdk-type="JavaSDK" />
+ </project>
+\ No newline at end of file
+Index: src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Tematica.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Tematica.java b/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Tematica.java
+--- a/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Tematica.java	
++++ b/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Tematica.java	
+@@ -33,6 +33,9 @@
+ 
+     @Override
+     public String toString() {
+-        return nombreTematica;
++        return "Tematica{" +
++                "tematicaID=" + tematicaID +
++                ", nombreTematica='" + nombreTematica + '\'' +
++                '}';
+     }
+ }
+Index: src/main/webapp/eliminar_libro_prubea.html
+===================================================================
+diff --git a/src/main/webapp/eliminar_libro_prubea.html b/src/main/webapp/eliminar_libro_prubea.html
+new file mode 100644
+--- /dev/null	
++++ b/src/main/webapp/eliminar_libro_prubea.html	
+@@ -0,0 +1,57 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++    <meta charset="UTF-8">
++    <title>Eliminar Libro</title>
++    <style>
++        table {
++            border-collapse: collapse;
++        }
++        td, th {
++            border: 1px solid black;
++            padding: 8px;
++        }
++        button {
++            padding: 4px 8px;
++            background-color: red;
++            color: white;
++            border: none;
++            cursor: pointer;
++        }
++    </style>
++</head>
++<body>
++
++<h2>Tabla de elementos</h2>
++<table id="tabla">
++    <thead>
++    <tr>
++        <th>Nombre</th>
++        <th>Acción</th>
++    </tr>
++    </thead>
++    <tbody>
++    <tr>
++        <td>Elemento 1</td>
++        <td><button onclick="eliminarElemento(this)">Eliminar</button></td>
++    </tr>
++    <tr>
++        <td>Elemento 2</td>
++        <td><button onclick="eliminarElemento(this)">Eliminar</button></td>
++    </tr>
++    <tr>
++        <td>Elemento 3</td>
++        <td><button onclick="eliminarElemento(this)">Eliminar</button></td>
++    </tr>
++    </tbody>
++</table>
++
++<script>
++    function eliminarElemento(boton) {
++        var fila = boton.parentNode.parentNode;
++        fila.parentNode.removeChild(fila);
++    }
++</script>
++
++</body>
++</html>
+\ No newline at end of file
+Index: target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst b/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+--- a/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst	
++++ b/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst	
+@@ -1,25 +1,32 @@
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Autor.class
++cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\AutorService.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Profesor.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Tematica.class
++cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\EditorialServiceImp.class
++cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\LibroService.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\ProfesorService.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CookieService.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CursoServiceImp.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\ProfesorServlet.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\CursoServlet.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CookieServiceImp.class
++cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\TematicaServiceImp.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Libro.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\Main.class
++cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\TematicaService.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\LoginServlet.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\data\EditorialesXMLDAO.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Curso.class
++cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\LibroServiceImp.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\LogoutServlet.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\data\CursoXMLDAO.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\SessionServiceImp.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\ProfesorServiceImp.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\data\TematicasXMLDAO.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\SessionService.class
++cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\EditorialService.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CursoService.class
+-cr\ac\ucr\paraiso\ie\progra2\webapp\session\data\AutoresXMLDAO.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\data\ProfesorXMLDAO.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Editorial.class
++cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\AutorServiceImp.class
+ cr\ac\ucr\paraiso\ie\progra2\webapp\session\data\LibrosXMLDAO.class
+Index: target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst b/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+--- a/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst	
++++ b/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst	
+@@ -1,25 +1,37 @@
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\data\CursoXMLDAO.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Editorial.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\data\LibrosXMLDAO.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Profesor.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CookieServiceImp.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\SessionServiceImp.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Autor.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\ProfesorServiceImp.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CursoService.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\data\EditorialesXMLDAO.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\data\ProfesorXMLDAO.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\LoginServlet.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\SessionService.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CursoServiceImp.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CookieService.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\CursoServlet.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Tematica.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\ProfesorService.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\data\AutoresXMLDAO.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\ProfesorServlet.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\data\TematicasXMLDAO.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\Main.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Libro.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Curso.java
+-C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\LogoutServlet.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\BuscarLibroServlet.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\Main.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Libro.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\data\AutorXMLDAO.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\data\LibrosXMLDAO.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CursoServiceImp.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\ProfesorService.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Tematica.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\SessionService.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\TematicaServiceImp.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\ProfesorServiceImp.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Editorial.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\data\CursoXMLDAO.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\LoginServlet.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\LibroServiceImp.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Autor.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CursoService.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\ProfesorServlet.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Curso.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\data\TematicasXMLDAO.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\LibroService.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\models\Profesor.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\data\EditorialesXMLDAO.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\IngresarLibroServlet.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\AutorService.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\EditorialServiceImp.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\LogoutServlet.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\ModificarLibroServlet.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\TematicaService.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\CursoServlet.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\data\ProfesorXMLDAO.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\servlets\EliminarLibroServlet.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\AutorServiceImp.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CookieService.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\EditorialService.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\SessionServiceImp.java
++C:\Users\Blanca Segura\Desktop\Proyecto2_Progra\src\main\java\cr\ac\ucr\paraiso\ie\progra2\webapp\session\service\CookieServiceImp.java
+Index: target/surefire-reports/TEST-test.CursoXMLDAOTest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/target/surefire-reports/TEST-test.CursoXMLDAOTest.xml b/target/surefire-reports/TEST-test.CursoXMLDAOTest.xml
+--- a/target/surefire-reports/TEST-test.CursoXMLDAOTest.xml	
++++ b/target/surefire-reports/TEST-test.CursoXMLDAOTest.xml	
+@@ -1,24 +1,24 @@
+ <?xml version="1.0" encoding="UTF-8" ?>
+-<testsuite tests="1" failures="0" name="test.CursoXMLDAOTest" time="0.115" errors="0" skipped="0">
++<testsuite tests="2" failures="0" name="test.CursoXMLDAOTest" time="0.044" errors="0" skipped="0">
+   <properties>
+     <property name="idea.version" value="2022.2.4"/>
+-    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+-    <property name="java.vm.version" value="19.0.2+7-44"/>
+-    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-19\bin"/>
+-    <property name="maven.multiModuleProjectDirectory" value="C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra"/>
++    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
++    <property name="java.vm.version" value="20.0.1+9-29"/>
++    <property name="sun.boot.library.path" value="C:\Users\Blanca Segura\.jdks\openjdk-20.0.1\bin"/>
++    <property name="maven.multiModuleProjectDirectory" value="C:\Users\Blanca Segura\Desktop\Proyecto2_Progra"/>
+     <property name="java.vm.vendor" value="Oracle Corporation"/>
+     <property name="java.vendor.url" value="https://java.oracle.com/"/>
+     <property name="guice.disable.misplaced.annotation.check" value="true"/>
+     <property name="path.separator" value=";"/>
+-    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
++    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+     <property name="sun.os.patch.level" value=""/>
+     <property name="user.script" value=""/>
+     <property name="user.country" value="CR"/>
+     <property name="sun.java.launcher" value="SUN_STANDARD"/>
+     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+-    <property name="user.dir" value="C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra"/>
++    <property name="user.dir" value="C:\Users\Blanca Segura\Desktop\Proyecto2_Progra"/>
+     <property name="java.vm.compressedOopsMode" value="Zero based"/>
+-    <property name="java.runtime.version" value="19.0.2+7-44"/>
++    <property name="java.runtime.version" value="20.0.1+9-29"/>
+     <property name="os.arch" value="amd64"/>
+     <property name="java.io.tmpdir" value="C:\Users\BLANCA~1\AppData\Local\Temp\"/>
+     <property name="line.separator" value="
+@@ -31,38 +31,39 @@
+     <property name="classworlds.conf" value="C:\Program Files\JetBrains\IntelliJ IDEA 2022.2.4\plugins\maven\lib\maven3\bin\m2.conf"/>
+     <property name="sun.jnu.encoding" value="Cp1252"/>
+     <property name="stdout.encoding" value="UTF-8"/>
+-    <property name="java.library.path" value="C:\Program Files\Java\jdk-19\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\Eclipse Adoptium\jdk-17.0.6.10-hotspot\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Java\jdk-12.0.1\bin;C:\Program Files\Git\cmd;C:\Users\Blanca Segura\AppData\Local\Microsoft\WindowsApps;C:\ProgramData\Blanca Segura\GitHubDesktop\bin;."/>
++    <property name="java.library.path" value="C:\Users\Blanca Segura\.jdks\openjdk-20.0.1\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\Eclipse Adoptium\jdk-17.0.6.10-hotspot\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Java\jdk-12.0.1\bin;C:\Program Files\Git\cmd;C:\Users\Blanca Segura\AppData\Local\Microsoft\WindowsApps;C:\ProgramData\Blanca Segura\GitHubDesktop\bin;."/>
+     <property name="maven.conf" value="C:\Program Files\JetBrains\IntelliJ IDEA 2022.2.4\plugins\maven\lib\maven3/conf"/>
+     <property name="jdk.debug" value="release"/>
+-    <property name="java.class.version" value="63.0"/>
++    <property name="java.class.version" value="64.0"/>
+     <property name="java.specification.name" value="Java Platform API Specification"/>
+     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+     <property name="os.version" value="10.0"/>
+     <property name="user.home" value="C:\Users\Blanca Segura"/>
+     <property name="user.timezone" value="America/Costa_Rica"/>
+     <property name="file.encoding" value="UTF-8"/>
+-    <property name="java.specification.version" value="19"/>
++    <property name="java.specification.version" value="20"/>
+     <property name="user.name" value="Blanca Segura"/>
+     <property name="java.class.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2022.2.4\plugins\maven\lib\maven3\boot\plexus-classworlds-2.6.0.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2022.2.4\plugins\maven\lib\maven3\boot\plexus-classworlds.license"/>
+-    <property name="java.vm.specification.version" value="19"/>
++    <property name="java.vm.specification.version" value="20"/>
+     <property name="sun.arch.data.model" value="64"/>
+     <property name="sun.java.command" value="org.codehaus.classworlds.Launcher -Didea.version=2022.2.4 tomcat7:redeploy"/>
+-    <property name="java.home" value="C:\Program Files\Java\jdk-19"/>
++    <property name="java.home" value="C:\Users\Blanca Segura\.jdks\openjdk-20.0.1"/>
+     <property name="user.language" value="es"/>
+     <property name="java.specification.vendor" value="Oracle Corporation"/>
+     <property name="java.vm.info" value="mixed mode, sharing"/>
+-    <property name="java.version" value="19.0.2"/>
++    <property name="java.version" value="20.0.1"/>
+     <property name="native.encoding" value="Cp1252"/>
+     <property name="java.vendor" value="Oracle Corporation"/>
+     <property name="sun.stderr.encoding" value="UTF-8"/>
+     <property name="maven.home" value="C:\Program Files\JetBrains\IntelliJ IDEA 2022.2.4\plugins\maven\lib\maven3"/>
+     <property name="file.separator" value="\"/>
+-    <property name="java.version.date" value="2023-01-17"/>
++    <property name="java.version.date" value="2023-04-18"/>
+     <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+     <property name="sun.cpu.endian" value="little"/>
+     <property name="sun.stdout.encoding" value="UTF-8"/>
+     <property name="sun.cpu.isalist" value="amd64"/>
+   </properties>
+-  <testcase classname="test.CursoXMLDAOTest" name="probarXML" time="0.115"/>
++  <testcase classname="test.CursoXMLDAOTest" name="probarXML" time="0.011"/>
++  <testcase classname="test.CursoXMLDAOTest" name="eliminarXML" time="0.033"/>
+ </testsuite>
+\ No newline at end of file
+Index: src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Autor.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Autor.java b/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Autor.java
+--- a/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Autor.java	
++++ b/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Autor.java	
+@@ -43,6 +43,17 @@
+ 
+     @Override
+     public String toString() {
+-        return nombreAutor + apellidoAutor;
++        return "Autor{" +
++                "autorID=" + autorID +
++                ", nombreAutor='" + nombreAutor + '\'' +
++                ", apellidoAutor='" + apellidoAutor + '\'' +
++                '}';
+     }
++
++/*    @Override
++    public String toString() {
++        return "Autor{" +
++                "autorID=" + autorID +
++                '}';
++    }*/
+ }
+Index: target/surefire-reports/test.CursoXMLDAOTest.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/target/surefire-reports/test.CursoXMLDAOTest.txt b/target/surefire-reports/test.CursoXMLDAOTest.txt
+--- a/target/surefire-reports/test.CursoXMLDAOTest.txt	
++++ b/target/surefire-reports/test.CursoXMLDAOTest.txt	
+@@ -1,4 +1,4 @@
+ -------------------------------------------------------------------------------
+ Test set: test.CursoXMLDAOTest
+ -------------------------------------------------------------------------------
+-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.177 sec
++Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.044 sec
+Index: src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Editorial.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Editorial.java b/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Editorial.java
+--- a/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Editorial.java	
++++ b/src/main/java/cr/ac/ucr/paraiso/ie/progra2/webapp/session/models/Editorial.java	
+@@ -33,6 +33,9 @@
+ 
+     @Override
+     public String toString() {
+-        return editorialID + nombreEditorial;
++        return "Editorial{" +
++                "editorialID=" + editorialID +
++                ", nombreEditorial='" + nombreEditorial + '\'' +
++                '}';
+     }
+ }

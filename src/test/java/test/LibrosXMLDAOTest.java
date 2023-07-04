@@ -18,11 +18,6 @@ public class LibrosXMLDAOTest {
     public void probarXML() throws IOException, JDOMException {
         crear();
         librosXMLDAO = LibrosXMLDAO.abrirDocumento("libros.xml");
-        try {
-            System.out.println(librosXMLDAO.buscarTitulo("harry potter"));
-        } catch (DataConversionException e) {
-            throw new RuntimeException(e);
-        }
 
     }
 
@@ -38,21 +33,7 @@ public class LibrosXMLDAOTest {
     public void eliminarLibro() throws IOException, JDOMException {
         crear();
         librosXMLDAO.eliminarLibro(1);
-    }
-    @Test
-    public void buscarPorAutor () throws IOException, JDOMException {
-        crear();
-        System.out.println(librosXMLDAO.buscarAutor(2));
-    }
-    @Test
-    public void buscarPorTematica () throws IOException, JDOMException {
-        crear();
-        System.out.println(librosXMLDAO.buscarTematica("Ficción"));
-    }
-    @Test
-    public void buscarPorEditorial () throws IOException, JDOMException {
-        crear();
-        System.out.println(librosXMLDAO.buscarEditorial("Planeta"));
+
     }
     private void crear() throws IOException {
         librosXMLDAO = LibrosXMLDAO.crearDocumento("libros.xml");

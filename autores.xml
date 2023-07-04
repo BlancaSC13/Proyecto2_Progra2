@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<autores>
+  <autor id="1">
+    <nombre>J.k</nombre>
+    <apellido>Rowilling</apellido>
+  </autor>
+  <autor id="2">
+    <nombre>Gabriel</nombre>
+    <apellido>García</apellido>
+  </autor>
+</autores>
