@@ -33,6 +33,9 @@ public class Editorial {
 
     @Override
     public String toString() {
-        return editorialID + nombreEditorial;
+        return "Editorial{" +
+                "editorialID=" + editorialID +
+                ", nombreEditorial='" + nombreEditorial + '\'' +
+                '}';
     }
 }

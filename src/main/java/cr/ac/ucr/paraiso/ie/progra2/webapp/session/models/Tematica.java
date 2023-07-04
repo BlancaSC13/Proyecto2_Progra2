@@ -33,6 +33,9 @@ public class Tematica {
 
     @Override
     public String toString() {
-        return nombreTematica;
+        return "Tematica{" +
+                "tematicaID=" + tematicaID +
+                ", nombreTematica='" + nombreTematica + '\'' +
+                '}';
     }
 }

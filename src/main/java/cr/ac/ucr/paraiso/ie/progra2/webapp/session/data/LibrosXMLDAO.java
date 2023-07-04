@@ -205,55 +205,6 @@ public class LibrosXMLDAO {
         }
         return librosEncontrados;
     }
-
-    public boolean buscar(int idLibro) throws JDOMException, IOException {
-        List<Element> eListaLibros = raiz.getChildren("libro");
-        inicializarXML();
-        for (Element eLibro : eListaLibros) {
-            int idBuscando = Integer.parseInt(eLibro.getChildText("id"));
-            if (idBuscando == idLibro) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void modificarLibro(Libro libroModificado) throws IOException {
-        List<Element> eListaLibros = raiz.getChildren("libro");
-
-        for (Element eLibro : eListaLibros) {
-            if (Integer.parseInt(eLibro.getAttributeValue("id")) == libroModificado.getLibroID()) {
-                if (libroModificado.getTitulo() != null) {
-                    eLibro.getChild("titulo").setText(libroModificado.getTitulo());
-                }
-
-                if (libroModificado.getAutores() != null) {
-                    Element eAutores = eLibro.getChild("autores");
-                    List<Element> eIdAutores = eAutores.getChildren("idAutor");
-                    eIdAutores.clear(); // Limpiar la lista de autores existentes
-
-                    for (Autor autor : libroModificado.getAutores()) {
-                        Element eIdAutor = new Element("idAutor");
-                        eIdAutor.setText(String.valueOf(autor.getAutorID()));
-                        eAutores.addContent(eIdAutor);
-                    }
-                }
-
-                if (libroModificado.getEditorial() != null) {
-                    eLibro.getChild("editorial").setText(String.valueOf(libroModificado.getEditorial().getEditorialID()));
-                }
-
-                if (libroModificado.getTematica() != null) {
-                    eLibro.getChild("tematica").setText(libroModificado.getTematica().getNombreTematica());
-                }
-
-                break;
-            }
-        }
-
-        guardar();
-    }
-
     public ArrayList<Libro> getLibros() throws JDOMException, IOException {
         List<Element> eLibros = raiz.getChildren();
         ArrayList<Libro> libros = new ArrayList<Libro>();

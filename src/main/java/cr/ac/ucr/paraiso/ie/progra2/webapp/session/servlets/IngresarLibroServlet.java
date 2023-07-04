@@ -3,7 +3,6 @@ package cr.ac.ucr.paraiso.ie.progra2.webapp.session.servlets;
 
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.AutorXMLDAO;
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.EditorialesXMLDAO;
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.LibrosXMLDAO;
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.TematicasXMLDAO;
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.*;
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.CursoService;
@@ -20,34 +19,34 @@ import org.jdom2.JDOMException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @WebServlet("/ingresar")
 public class IngresarLibroServlet extends HttpServlet {
-    public List<Editorial> listaEditoriales;
-    public List<Tematica> listaTematicas;
-    public List<Autor> listaAutores;
-    public List<Libro> listaLibros;
-    public Libro libroInsertar;
-
+    private List<Editorial> editoriales;
+    private List<Tematica> tematicas;
+    private List<Autor> autores;
+    private Libro libroAInsertar;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            //resp.setContentType("text/html");
+            TematicasXMLDAO tematicasXMLDAO = TematicasXMLDAO.abrirDocumento("tematicas.xml");
+            //List<Tematica> tematicasXML;
+            tematicasXMLDAO.getTematicas();
+            EditorialesXMLDAO editorialesXMLDAO = EditorialesXMLDAO.abrirDocumento("editoriales.xml");
+            editorialesXMLDAO.getEditoriales();
+            AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
+            autorXMLDAO.getAutores();
 
-            listaTematicas = TematicasXMLDAO.abrirDocumento("tematicas.xml").getTematicas();
-            req.setAttribute("tematicas", listaTematicas);
-            req.getRequestDispatcher("/insertar_libro.jsp").forward(req, resp);
-
-            listaEditoriales = EditorialesXMLDAO.abrirDocumento("editoriales.xml").getEditoriales();
-            req.setAttribute("editoriales", listaEditoriales);
-            req.getRequestDispatcher("/insertar_libro.jsp").forward(req, resp);
-
-            listaAutores = AutorXMLDAO.abrirDocumento("autores.xml").getAutores();
-            req.setAttribute("autores", listaAutores);
-            req.getRequestDispatcher("/insertar_libro.jsp").forward(req, resp);
+            req.setAttribute("tematicas", tematicas);
+            req.getRequestDispatcher("/insertar_tematica.jsp").forward(req,resp);
+            req.setAttribute("editoriales", editoriales);
+            req.getRequestDispatcher("/insertar_editorial.jsp").forward(req,resp);
+            req.setAttribute("autores", autores);
+            req.getRequestDispatcher("/insertar_autores.jsp").forward(req,resp);
+            /*req.setAttribute();
+            req.getRequestDispatcher().forward(req,resp);*/
 
         } catch (JDOMException e) {
             throw new RuntimeException(e);
@@ -57,64 +56,16 @@ public class IngresarLibroServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //resp.setContentType("text/html");
-        int identificacion = Integer.parseInt(req.getParameter("id"));
-        int isbn = Integer.parseInt(req.getParameter("isbn"));
-        String titulo = req.getParameter("titulo");
-        String tematica = req.getParameter("tematicas");
-        String editorial = req.getParameter("editorial");
-        String autores = req.getParameter("autores");
-
-        List<String> check = new ArrayList<>();
-
-        if (titulo == null || titulo.equals("")) check.add("El título del libro es requerido");
-        if (tematica == null || tematica.equals("")) check.add("La tematica es es requerida");
-        if (autores == null || autores.equals("")) check.add("Los autores son requeridos");
-
-        if (check.isEmpty()) {
-            LibrosXMLDAO librosXMLDAO = null;
-            try {
-                librosXMLDAO = LibrosXMLDAO.abrirDocumento("libros.xml");
-            } catch (JDOMException e) {
-                throw new RuntimeException(e);
-            }
-
-            try {
-                if (!librosXMLDAO.buscar(identificacion)) {
-                    Libro libro = new Libro();
-                    libro.setLibroID(identificacion);
-                    libro.setISBN(isbn);
-                    libro.setTitulo(titulo);
-
-                    Autor autors = new Autor();
-                    autors.setNombreAutor(autores);
-                    libro.setAutores((List<Autor>) autors);
-
-                    Editorial editorial1 = new Editorial();
-                    editorial1.setNombreEditorial(editorial);
-
-                    Tematica tematica1 = new Tematica();
-                    tematica1.setNombreTematica(tematica);
-
-                    librosXMLDAO.insertarLibro(libro);
-                    req.setAttribute("insertado", true);
-                } else {
-                    req.setAttribute("insertado", false);
-                }
-            } catch (JDOMException e) {
-                throw new RuntimeException(e);
-            }
-
-            getServletContext().getRequestDispatcher("/servletEjemplo").forward(req, resp);
-
-        } else {
-            req.setAttribute("check", check);
-            req.setAttribute("libros", listaLibros);
-            getServletContext().getRequestDispatcher("/insertar_libros.jsp").forward(req, resp);
-        }
+        Libro libro = new Libro();
+        libro.setLibroID(Integer.parseInt(req.getParameter("id")));
+        libro.setTitulo(req.getParameter("titulo"));
+      //  libro.setAutores(req.getParameter("autores"));
+      /*  libro.setTematica(req.getParameter("tematicas"));
+        libro.setEditorial(req.getParameter("editoriales"));*/ //tiene que recorrerse las listas
 
 
     }
+
 
 
 }
