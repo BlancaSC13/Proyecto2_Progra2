@@ -43,10 +43,6 @@ public class Autor {
 
     @Override
     public String toString() {
-        return "Autor{" +
-                "autorID=" + autorID +
-                ", nombreAutor='" + nombreAutor + '\'' +
-                ", apellidoAutor='" + apellidoAutor + '\'' +
-                '}';
+        return nombreAutor + apellidoAutor;
     }
 }

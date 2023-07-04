@@ -47,7 +47,7 @@ public class AutorXMLDAO {
         xmlOutputter.setFormat(Format.getPrettyFormat());
         xmlOutputter.output(this.document, new FileWriter(this.rutaDocumento));
         //Extra para revisión
-        xmlOutputter.output(this.document, System.out);
+       // xmlOutputter.output(this.document, System.out);
     }
 
     public void insertarAutores(Autor autor) throws IOException {
@@ -90,6 +90,21 @@ public class AutorXMLDAO {
         }
         return autor;
     }
+
+    public void modificarAutor(Autor autor) throws IOException {
+        List<Element> eAutores = raiz.getChildren();
+
+        for (Element eAutor : eAutores) {
+            if (Integer.parseInt(eAutor.getAttributeValue("id")) == autor.getAutorID()) {
+                eAutor.getChild("nombre").setText(autor.getNombreAutor());
+                eAutor.getChild("apellido").setText(autor.getApellidoAutor());
+                break;
+            }
+        }
+
+        guardar();
+    }
+
 
     public ArrayList<Autor> getAutores() throws DataConversionException {
         List eListaAutores = raiz.getChildren();
