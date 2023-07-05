@@ -38,7 +38,7 @@
         <button type="submit">Buscar</button>
     </form>
 
-    <div id="resultadosBusqueda"></div>
+    <div id="resultadosBusqueda"></div><br><br>
 
     <table border="1">
         <thead>
@@ -109,7 +109,8 @@
         </tr>
         <% } %>
         </tbody>
-    </table>
+    </table><br><br>
+    <button onclick="location.href='/Proyecto2_Progra'">Volver</button>
 </div>
 </body>
 </html>

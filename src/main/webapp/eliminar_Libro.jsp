@@ -31,6 +31,8 @@
             <label for="identificacion"><span>Id:</span>
                 <input type="text" id="identificacion" name="identificacion"required></label>
             <button type="submit">Eliminar</button>
+            <button onclick="location.href='/Proyecto2_Progra'">Volver</button>
+
         </div>
         <br><br>
 </form>

@@ -124,6 +124,8 @@
             <br><br>
         </label>
         <button type="submit">Modificar Libro</button>
+        <button onclick="location.href='/Proyecto2_Progra'">Volver</button>
+
     </form>
 </div>
 <table>
