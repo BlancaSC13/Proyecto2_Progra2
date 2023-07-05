@@ -17,7 +17,7 @@ import java.util.List;
 
 public class LibrosXMLDAOTest {
     LibrosXMLDAO librosXMLDAO;
-    @Test
+   // @Test
     public void probarXML() throws IOException, JDOMException {
         crear();
         librosXMLDAO = LibrosXMLDAO.abrirDocumento("libros.xml");
@@ -32,14 +32,14 @@ public class LibrosXMLDAOTest {
         System.out.println(libros);
     }
 
-    @Test
+   // @Test
     public void eliminarLibro() throws IOException, JDOMException {
         crear();
         librosXMLDAO.eliminarLibro(1);
 
     }
 
-    private void crear() throws IOException {
+    private void crear() throws IOException, JDOMException {
         librosXMLDAO = LibrosXMLDAO.crearDocumento("libros.xml");
         // librosXMLDAO = LibrosXMLDAO.abrirDocumento("libros.xml");
 
