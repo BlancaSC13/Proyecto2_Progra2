@@ -98,57 +98,61 @@ public class IngresarLibroServlet extends HttpServlet {
                     throw new RuntimeException(e);
                 }
 
-                //  if (!librosXMLDAO.buscar(identificacion)){
-                Libro libro = new Libro();
-                //libro.setLibroID(Integer.parseInt(identificacion));
-                libro.setISBN(Integer.parseInt(isbn));
-                libro.setTitulo(titulo);
+                if (!librosXMLDAO.buscar(Integer.parseInt(identificacion))) {
+                    Libro libro = new Libro();
+                    libro.setLibroID(Integer.parseInt(identificacion));
+                    libro.setISBN(Integer.parseInt(isbn));
+                    libro.setTitulo(titulo);
 
-                AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
-                List<Autor> autores = autorXMLDAO.getAutores();
-                List<Autor> autoresSeleccionados = new ArrayList<>();
+                    AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
+                    List<Autor> autores = autorXMLDAO.getAutores();
+                    List<Autor> autoresSeleccionados = new ArrayList<>();
 
-                int autorIDInt = Integer.parseInt(autorID);
-                for (Autor autor : autores) {
-                    out.println("Autor ID: " + autor.getAutorID());
-                    if ( autorIDInt == autor.getAutorID()) {
-                        autoresSeleccionados.add(autor);
+                    int autorIDInt = Integer.parseInt(autorID);
+                    for (Autor autor : autores) {
+                        out.println("Autor ID: " + autor.getAutorID());
+                        if (autorIDInt == autor.getAutorID()) {
+                            autoresSeleccionados.add(autor);
+                        }
                     }
-                }
 
-                if (!autoresSeleccionados.isEmpty()) {
-                    libro.setAutores(autoresSeleccionados);
-                }
-
-
-                EditorialesXMLDAO editorialesXMLDAO = EditorialesXMLDAO.abrirDocumento("editoriales.xml");
-                List<Editorial> editoriales = editorialesXMLDAO.getEditoriales();
-                Editorial editorialSeleccionada = null;
-
-                for (Editorial editorial : editoriales) {
-                    if (editorial.getEditorialID() == Integer.parseInt(editorialID)) {
-                        editorialSeleccionada = editorial;
-                        break;
+                    if (!autoresSeleccionados.isEmpty()) {
+                        libro.setAutores(autoresSeleccionados);
                     }
+
+
+                    EditorialesXMLDAO editorialesXMLDAO = EditorialesXMLDAO.abrirDocumento("editoriales.xml");
+                    List<Editorial> editoriales = editorialesXMLDAO.getEditoriales();
+                    Editorial editorialSeleccionada = null;
+
+                    for (Editorial editorial : editoriales) {
+                        if (editorial.getEditorialID() == Integer.parseInt(editorialID)) {
+                            editorialSeleccionada = editorial;
+                            break;
+                        }
+                    }
+
+                    if (editorialSeleccionada != null) {
+                        libro.setEditorial(editorialSeleccionada);
+                    }
+
+
+                    Tematica tematicas = new Tematica();
+                    tematicas.setNombreTematica(tematica);
+                    libro.setTematica(tematicas);
+
+                    librosXMLDAO.insertarLibro(libro);
+                    req.setAttribute("insertado", true);
+                } else {
+                    req.setAttribute("insertado", false);
                 }
-
-                if (editorialSeleccionada != null) {
-                    libro.setEditorial(editorialSeleccionada);
-                }
-
-
-                Tematica tematicas = new Tematica();
-                tematicas.setNombreTematica(tematica);
-                libro.setTematica(tematicas);
-
-                librosXMLDAO.insertarLibro(libro);
-                req.setAttribute("insertado", true);
                 getServletContext().getRequestDispatcher("/servletEjemplo").forward(req, resp);
-            } else {
+            }else{
                 req.setAttribute("check", check);
                 req.setAttribute("libros", listaLibros);
                 getServletContext().getRequestDispatcher("/insertar_libro.jsp").forward(req, resp);
             }
+
 
         } catch (JDOMException e) {
             throw new RuntimeException(e);

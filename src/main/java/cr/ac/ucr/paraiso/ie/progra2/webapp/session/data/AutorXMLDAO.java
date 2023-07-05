@@ -100,7 +100,7 @@ public class AutorXMLDAO {
             Autor autorActual = new Autor();
             autorActual.setAutorID(eAutor.getAttribute("id").getIntValue());
             autorActual.setNombreAutor(eAutor.getChildText("nombre"));
-            autorActual.setApellidoAutor(eAutor.getChildText("apellido"));
+            autorActual.setApellidoAutor(eAutor.getChildText("carrera"));
             autores.add(autorActual);
         }
         return autores;

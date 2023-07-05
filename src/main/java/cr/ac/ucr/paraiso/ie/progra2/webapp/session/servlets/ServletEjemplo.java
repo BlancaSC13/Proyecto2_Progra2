@@ -34,8 +34,8 @@ public class ServletEjemplo extends HttpServlet {
             out.println("        <h2 style=\"text-align:center:\">Libro insertado correctamente</h2>");
             out.println("<a href=\"./index.html\">Home</>");
         }else {
-            out.println("        <h2 style=\"text-align:center:\">El libro ya existe</h2>");
-            out.println("<a href=\"./IngresarLibroServlet\">Regresar</>");
+            out.println("        <h2 style=\"text-align:center:\">El id ingresado ya se encuentra en uso, por favor digite uno distinto</h2>");
+            out.println("<a href=\"./ingresar\">Regresar</>");
         }
         out.println("    </body>");
         out.println("</html>");

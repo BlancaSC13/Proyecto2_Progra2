@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tematicas>
-  <tematicas id="5">
+  <tematicas id="1">
     <nombre>Ficción</nombre>
   </tematicas>
-  <tematicas id="6">
+  <tematicas id="2">
     <nombre>Aventura</nombre>
   </tematicas>
-  <tematicas id="7">
+  <tematicas id="3">
     <nombre>Fantasía</nombre>
   </tematicas>
-  <tematicas id="8">
+  <tematicas id="4">
     <nombre>Misterio</nombre>
   </tematicas>
-  <tematicas id="9">
+  <tematicas id="5">
     <nombre>Novela</nombre>
   </tematicas>
 </tematicas>

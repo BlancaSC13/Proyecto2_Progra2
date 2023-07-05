@@ -1,4 +1,3 @@
-
 <%@page import="java.util.List"%>
 <%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Editorial" %>
 <%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Tematica" %>
@@ -8,6 +7,7 @@
 <%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.EditorialesXMLDAO" %>
 <%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.AutorXMLDAO" %>
 <%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.TematicasXMLDAO" %>
+<%@ page import="java.util.ArrayList" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
@@ -34,7 +34,7 @@
     <h1>Buscar Libros</h1>
 
     <form>
-        <input type="text" id="entradaBusqueda" placeholder="Ingrese el título del libro">
+        <input type="text" name="titulo" placeholder="Ingrese el título, autor, tema o editorial">
         <button type="submit">Buscar</button>
     </form>
 
@@ -47,27 +47,59 @@
             <th>ISBN</th>
             <th>Título</th>
             <th>Editorial</th>
-            <th>Tematica</th>
+            <th>Tema</th>
             <th>Autores</th>
             <th>Acción</th>
         </tr>
         </thead>
 
-        <% LibrosXMLDAO librosXmlDao = LibrosXMLDAO.abrirDocumento("libros.xml");
-            List<Libro> libros = librosXmlDao.getLibros();%>
+        <%
+            List<Libro> librosFiltrados = new ArrayList<>();
+            String titulo = request.getParameter("titulo");
 
-        <% EditorialesXMLDAO editorialesXMLDAO = EditorialesXMLDAO.abrirDocumento("editoriales.xml");
-            List<Editorial> editoriales = editorialesXMLDAO.getEditoriales();%>
+            if (titulo == null || titulo.isEmpty()) {
+                LibrosXMLDAO librosXmlDao = LibrosXMLDAO.abrirDocumento("libros.xml");
+                librosFiltrados = librosXmlDao.getLibros();
+            } else {
+                LibrosXMLDAO librosXmlDao = LibrosXMLDAO.abrirDocumento("libros.xml");
+                List<Libro> libros = librosXmlDao.getLibros();
 
-        <% AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
-            List<Autor> autores = autorXMLDAO.getAutores();%>
+                for (Libro libro : libros) {
+                    List<Autor> autores = libro.getAutores();
 
-        <% TematicasXMLDAO tematicasXMLDAO = TematicasXMLDAO.abrirDocumento("tematicas.xml");
-            List<Tematica> tematicas = tematicasXMLDAO.getTematicas();%>
+                    if (libro.getTitulo().contains(titulo) ||
+                            libro.getAutores().contains(titulo) ||
+                            libro.getTematica().getNombreTematica().contains(titulo) ||
+                            libro.getEditorial().getNombreEditorial().contains(titulo)) {
+                        librosFiltrados.add(libro);
+                    }
+
+                    // Buscar por autor
+                    for (Autor autor : autores) {
+                        if (autor.getNombreAutor().contains(titulo)) {
+                            librosFiltrados.add(libro);
+                        }
+                        if (autor.getApellidoAutor().contains(titulo)){
+                            librosFiltrados.add(libro);
+                        }
+                    }
+                }
+            }
+
+            request.setAttribute("libros", librosFiltrados);
+
+            EditorialesXMLDAO editorialesXMLDAO = EditorialesXMLDAO.abrirDocumento("editoriales.xml");
+            List<Editorial> editoriales = editorialesXMLDAO.getEditoriales();
+
+            AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
+            List<Autor> autores = autorXMLDAO.getAutores();
+
+            TematicasXMLDAO tematicasXMLDAO = TematicasXMLDAO.abrirDocumento("tematicas.xml");
+            List<Tematica> tematicas = tematicasXMLDAO.getTematicas();
+        %>
 
         <tbody>
-
-        <% for (Libro libroActual : libros) { %>
+        <% for (Libro libroActual : librosFiltrados) { %>
         <tr>
             <td><%= libroActual.getLibroID() %></td>
             <td><%= libroActual.getISBN() %></td>
@@ -77,7 +109,7 @@
             <td><%= libroActual.getAutores() %></td>
             <td><a href="/session-webapp/libros">M</a></td>
         </tr>
-        <% }%>
+        <% } %>
         </tbody>
     </table>
 </div>

@@ -88,4 +88,16 @@ public class EditorialesXMLDAO {
         }
         return editorialEncontrada;
     }
+    public Editorial buscar (String nombreEditorial) throws DataConversionException {
+        List eListaEditoriales = raiz.getChildren();
+        Editorial editorialEncontrada = new Editorial();
+        for (Object obj:eListaEditoriales) {
+            Element eEditorial = (Element) obj;
+            if (eEditorial.getChildText("nombre").equals(nombreEditorial)){
+                editorialEncontrada.setEditorialID(eEditorial.getAttribute("id").getIntValue());
+                editorialEncontrada.setNombreEditorial(nombreEditorial);
+            }
+        }
+        return editorialEncontrada;
+    }
 }

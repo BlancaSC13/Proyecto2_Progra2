@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="1" failures="0" name="test.TematicasXMLDAOTest" time="0.005" errors="0" skipped="0">
+<testsuite tests="1" failures="0" name="test.TematicasXMLDAOTest" time="0.008" errors="0" skipped="0">
   <properties>
     <property name="idea.version" value="2022.2.4"/>
-    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
-    <property name="java.vm.version" value="19.0.2+7-44"/>
-    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-19\bin"/>
-    <property name="maven.multiModuleProjectDirectory" value="C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="java.vm.version" value="20.0.1+9-29"/>
+    <property name="sun.boot.library.path" value="C:\Users\Blanca Segura\.jdks\openjdk-20.0.1\bin"/>
+    <property name="maven.multiModuleProjectDirectory" value="C:\Users\Blanca Segura\Desktop\Proyecto\Proyecto2_Progra"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="java.vendor.url" value="https://java.oracle.com/"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
     <property name="path.separator" value=";"/>
-    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
     <property name="sun.os.patch.level" value=""/>
     <property name="user.script" value=""/>
     <property name="user.country" value="CR"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="C:\Users\Blanca Segura\IdeaProjects\Proyecto2_Progra"/>
+    <property name="user.dir" value="C:\Users\Blanca Segura\Desktop\Proyecto\Proyecto2_Progra"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
-    <property name="java.runtime.version" value="19.0.2+7-44"/>
+    <property name="java.runtime.version" value="20.0.1+9-29"/>
     <property name="os.arch" value="amd64"/>
     <property name="java.io.tmpdir" value="C:\Users\BLANCA~1\AppData\Local\Temp\"/>
     <property name="line.separator" value="
@@ -31,38 +31,38 @@
     <property name="classworlds.conf" value="C:\Program Files\JetBrains\IntelliJ IDEA 2022.2.4\plugins\maven\lib\maven3\bin\m2.conf"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
     <property name="stdout.encoding" value="UTF-8"/>
-    <property name="java.library.path" value="C:\Program Files\Java\jdk-19\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\Eclipse Adoptium\jdk-17.0.6.10-hotspot\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Java\jdk-12.0.1\bin;C:\Program Files\Git\cmd;C:\Users\Blanca Segura\AppData\Local\Microsoft\WindowsApps;C:\ProgramData\Blanca Segura\GitHubDesktop\bin;."/>
+    <property name="java.library.path" value="C:\Users\Blanca Segura\.jdks\openjdk-20.0.1\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\Eclipse Adoptium\jdk-17.0.6.10-hotspot\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Java\jdk-12.0.1\bin;C:\Program Files\Git\cmd;C:\Users\Blanca Segura\AppData\Local\Microsoft\WindowsApps;C:\ProgramData\Blanca Segura\GitHubDesktop\bin;."/>
     <property name="maven.conf" value="C:\Program Files\JetBrains\IntelliJ IDEA 2022.2.4\plugins\maven\lib\maven3/conf"/>
     <property name="jdk.debug" value="release"/>
-    <property name="java.class.version" value="63.0"/>
+    <property name="java.class.version" value="64.0"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="os.version" value="10.0"/>
     <property name="user.home" value="C:\Users\Blanca Segura"/>
     <property name="user.timezone" value="America/Costa_Rica"/>
     <property name="file.encoding" value="UTF-8"/>
-    <property name="java.specification.version" value="19"/>
+    <property name="java.specification.version" value="20"/>
     <property name="user.name" value="Blanca Segura"/>
     <property name="java.class.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2022.2.4\plugins\maven\lib\maven3\boot\plexus-classworlds-2.6.0.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2022.2.4\plugins\maven\lib\maven3\boot\plexus-classworlds.license"/>
-    <property name="java.vm.specification.version" value="19"/>
+    <property name="java.vm.specification.version" value="20"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="sun.java.command" value="org.codehaus.classworlds.Launcher -Didea.version=2022.2.4 tomcat7:redeploy"/>
-    <property name="java.home" value="C:\Program Files\Java\jdk-19"/>
+    <property name="java.home" value="C:\Users\Blanca Segura\.jdks\openjdk-20.0.1"/>
     <property name="user.language" value="es"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="java.vm.info" value="mixed mode, sharing"/>
-    <property name="java.version" value="19.0.2"/>
+    <property name="java.version" value="20.0.1"/>
     <property name="native.encoding" value="Cp1252"/>
     <property name="java.vendor" value="Oracle Corporation"/>
     <property name="sun.stderr.encoding" value="UTF-8"/>
     <property name="maven.home" value="C:\Program Files\JetBrains\IntelliJ IDEA 2022.2.4\plugins\maven\lib\maven3"/>
     <property name="file.separator" value="\"/>
-    <property name="java.version.date" value="2023-01-17"/>
+    <property name="java.version.date" value="2023-04-18"/>
     <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.stdout.encoding" value="UTF-8"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="test.TematicasXMLDAOTest" name="probar" time="0.005"/>
+  <testcase classname="test.TematicasXMLDAOTest" name="probar" time="0.008"/>
 </testsuite>

@@ -134,7 +134,7 @@
 
                 <select  style="width:300px" border="1px" name="autores" id="autores">
                     <% for (Autor autor : autores) {%>
-                    <option value="<%= autor.getAutorID() %>"><%= autor.getNombreAutor() + autor.getApellidoAutor() %>
+                    <option value="<%= autor.getAutorID() %>"><%= autor.getNombreAutor() + " " + autor.getApellidoAutor() %>
                     </option>
                     <% } %>
                 </select>
