@@ -6,25 +6,17 @@ import cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.EditorialesXMLDAO;
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.LibrosXMLDAO;
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.TematicasXMLDAO;
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.*;
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.CursoService;
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.CursoServiceImp;
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.SessionService;
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.service.SessionServiceImp;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import org.jdom2.DataConversionException;
-import org.jdom2.Element;
 import org.jdom2.JDOMException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @WebServlet("/ingresar")
 public class IngresarLibroServlet extends HttpServlet {

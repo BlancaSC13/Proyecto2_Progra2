@@ -3,8 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <title>Sistema de mantenimiento de catálogo</title>
+    <link rel="stylesheet" type="text/css" href="estilox.css/insertar.css">
+    <style>
+
+        body {
+            background-color: #f5f5dc;
+            background-repeat: no-repeat;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            margin-top: 50px;
+            font-size: 28px;
+            color: white;
+        }
+
+        h2 {
+            margin-top: 20px;
+            font-size: 22px;
+            color: white;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #49a5cc;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #53b5a5;
+        }
+    </style>
+
 </head>
 <body style="text-align: center" bgcolor="#f5f5dc">
+<div id="container">
 <h1>Bienvenido al Sistema de<br>
 mantenimiento de catálogo de libros</h1>
 <h2>Selecione lo que desea hacer:</h2>
@@ -19,6 +62,7 @@ mantenimiento de catálogo de libros</h1>
 </div><br>
 <div>
     <button onclick="location.href='/Proyecto2_Progra/eliminar_Libro.jsp'">Eliminar un libro</button>
+</div>
 </div>
 </body>
 </html>

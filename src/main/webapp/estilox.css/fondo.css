@@ -1,0 +1,11 @@
+body {
+    background-image: url('fondo.jpg');
+    background-size: cover;
+
+}
+
+#contenido {
+    margin: 50px;
+    padding: 20px;
+    background-color: rgb(255,255,255);
+}

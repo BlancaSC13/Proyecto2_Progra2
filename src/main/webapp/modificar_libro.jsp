@@ -14,6 +14,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Modificar un libro</title>
+    <link rel="stylesheet" type="text/css" href="estilox.css/fondo.css">
     <style>
         body {
             background-color: #f5f5dc;
@@ -22,12 +23,6 @@
             align-items: center;
             height: 100vh;
             font-family: Arial, sans-serif;
-        }
-
-        #form-container {
-            display: flex;
-            flex-direction: column;
-            margin-right: 50px;
         }
 
         #form-container label {
@@ -49,15 +44,24 @@
             margin-top: 10px;
         }
 
-        #authors-table {
-            margin-top: 20px;
-            border-collapse: collapse;
-        }
-
         #authors-table th,
         #authors-table td {
             border: 1px solid black;
             padding: 5px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: beige;
+            border-radius: 5px;
+            background-color: #f5f5dc;
+            color: black;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e6e6cc;
         }
     </style>
 </head>
@@ -128,7 +132,7 @@
 
     </form>
 </div>
-<table>
+<table border="1" style="background: white">
     <thead>
     <tr>
         <th>ID Libro</th>

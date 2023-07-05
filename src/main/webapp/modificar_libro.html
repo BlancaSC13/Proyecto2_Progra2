@@ -1,106 +1,124 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Modificar un libro</title>
-  <style>
-    .container {
-      background-color:#f5f5dc;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      font-family: Arial, sans-serif;
-    }
-    form {
-      width: 300px;
-    }
+    <meta charset="UTF-8">
+    <title>Modificar un libro</title>
+    <link rel="stylesheet" type="text/css" href="estilox.css/fondo.css">
+    <style>
+        .container {
+            background-color: #f5f5dc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
 
-    #authors-table {
-      margin-top: 20px;
-      border-collapse: collapse;
-    }
+        form {
+            width: 300px;
+        }
 
-    #authors-table th,
-    #authors-table td {
-      border: 1px solid black;
-      padding: 5px;
-    }
+        #authors-table {
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
 
-  </style>
+        #authors-table th,
+        #authors-table td {
+            border: 1px solid black;
+            padding: 5px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: beige;
+            border-radius: 5px;
+            background-color: #f5f5dc;
+            color: black;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e6e6cc;
+        }
+
+    </style>
 </head>
 <body>
 <div class="container">
-  <form>
-    <h2>Modificar un libro</h2>
-    <label for="id">Id:</label>
-    <input type="text" id="id" name="id" required><br><br>
+    <form>
+        <h2>Modificar un libro</h2>
+        <label for="id">Id:</label>
+        <input type="text" id="id" name="id" required><br><br>
 
-    <label for="isbn">ISBN:</label>
-    <input type="text" id="isbn" name="isbn" required><br><br>
+        <label for="isbn">ISBN:</label>
+        <input type="text" id="isbn" name="isbn" required><br><br>
 
-    <label for="titulo">Título:</label>
-    <input type="text" id="titulo" name="titulo" required><br><br>
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo" required><br><br>
 
-    <label for="editorial">Editorial:</label>
-    <select id="editorial" name="editorial" required>
-      <option value="editorial1">Editorial 1</option>
-      <option value="editorial2">Editorial 2</option>
-      <option value="editorial3">Editorial 3</option>
-    </select><br><br>
+        <label for="editorial">Editorial:</label>
+        <select id="editorial" name="editorial" required>
+            <option value="editorial1">Editorial 1</option>
+            <option value="editorial2">Editorial 2</option>
+            <option value="editorial3">Editorial 3</option>
+        </select><br><br>
 
-    <label for="tematica">Temática:</label>
-    <select id="tematica" name="tematica" required>
-      <option value="tematica1">Temática 1</option>
-      <option value="tematica2">Temática 2</option>
-      <option value="tematica3">Temática 3</option>
-    </select><br><br>
+        <label for="tematica">Temática:</label>
+        <select id="tematica" name="tematica" required>
+            <option value="tematica1">Temática 1</option>
+            <option value="tematica2">Temática 2</option>
+            <option value="tematica3">Temática 3</option>
+        </select><br><br>
 
-    <label for="autor">Autor/es:</label>
-    <select id="autor" name="autor" required>
-      <option value="autor1">Autor 1</option>
-      <option value="autor2">Autor 2</option>
-      <option value="autor3">Autor 3</option>
-    </select>
-    <button type="button" id="agregarAutor">Agregar</button><br><br>
+        <label for="autor">Autor/es:</label>
+        <select id="autor" name="autor" required>
+            <option value="autor1">Autor 1</option>
+            <option value="autor2">Autor 2</option>
+            <option value="autor3">Autor 3</option>
+        </select>
+        <button type="button" id="agregarAutor">Agregar</button>
+        <br><br>
 
-    <label for="estado">Estado:</label>
-    <select id="estado" name="estado" required>
-      <option value="estado1">Estado 1</option>
-      <option value="estado2">Estado 2</option>
-      <option value="estado3">Estado 3</option>
-    </select><br><br>
+        <label for="estado">Estado:</label>
+        <select id="estado" name="estado" required>
+            <option value="estado1">Estado 1</option>
+            <option value="estado2">Estado 2</option>
+            <option value="estado3">Estado 3</option>
+        </select><br><br>
 
-    <button type="submit">Eliminar Libro</button>
-    <button type="submit">Modificar Libro</button>
-  </form>
+        <button type="submit">Eliminar Libro</button>
+        <button type="submit">Modificar Libro</button>
+    </form>
 
-  <table id="authors-table">
-    <thead>
-    <tr>
-      <th>IdAutor</th>
-      <th>Nombre</th>
-      <th>Apellido</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td>1</td>
-      <td>Juan</td>
-      <td>Pérez</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>María</td>
-      <td>López</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>Carlos</td>
-      <td>González</td>
-    </tr>
-    </tbody>
-  </table>
+    <table id="authors-table" border="1" style="background: white">
+        <thead>
+        <tr>
+            <th>IdAutor</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1</td>
+            <td>Juan</td>
+            <td>Pérez</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>María</td>
+            <td>López</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Carlos</td>
+            <td>González</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>

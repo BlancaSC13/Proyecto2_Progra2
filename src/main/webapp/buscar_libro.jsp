@@ -14,9 +14,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Buscar Libros</title>
+    <link rel="stylesheet" type="text/css" href="estilox.css/fondo.css">
     <style>
         body {
-            background-color:#f5f5dc;
+            background-color:#e6e6cc;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -26,6 +27,20 @@
 
         .container {
             text-align: center;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: beige;
+            border-radius: 5px;
+            background-color: #f5f5dc;
+            color: black;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e6e6cc;
         }
     </style>
 </head>
@@ -40,7 +55,7 @@
 
     <div id="resultadosBusqueda"></div><br><br>
 
-    <table border="1">
+    <table border="1" style="background: white">
         <thead>
         <tr>
             <th>ID Libro</th>

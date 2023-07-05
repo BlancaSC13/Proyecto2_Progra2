@@ -14,11 +14,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Eliminar Libro</title>
+    <link rel="stylesheet" type="text/css" href="estilox.css/fondo.css">
+    <style>
+        body {
+            background-color:#f5f5dc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: beige;
+            border-radius: 5px;
+            background-color: #f5f5dc;
+            color: black;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e6e6cc;
+        }
+    </style>
+
 </head>
 <body>
 <div class="container">
     <form action="/Proyecto2_Progra/eliminar" method="get">
-        <h2>Modificar un libro</h2>
+        <h2>Eliminar un libro</h2>
             <% LibrosXMLDAO librosXMLDAO;
             try {
                 librosXMLDAO = LibrosXMLDAO.abrirDocumento("libros.xml");
@@ -38,7 +68,7 @@
 </form>
 </div>
 <div>
-    <table>
+    <table border="1" style="background: white">
         <thead>
         <tr>
             <th>ID Libro</th>
