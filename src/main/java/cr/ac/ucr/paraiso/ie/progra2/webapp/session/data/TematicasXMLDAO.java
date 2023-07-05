@@ -1,6 +1,6 @@
 package cr.ac.ucr.paraiso.ie.progra2.webapp.session.data;
 
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Curso;
+
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.Tematica;
 import org.jdom2.DataConversionException;
 import org.jdom2.Document;

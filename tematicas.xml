@@ -15,4 +15,22 @@
   <tematicas id="5">
     <nombre>Novela</nombre>
   </tematicas>
+  <tematicas id="6">
+    <nombre>Ciencia ficción</nombre>
+  </tematicas>
+  <tematicas id="7">
+    <nombre>Realismo mágico</nombre>
+  </tematicas>
+  <tematicas id="8">
+    <nombre>Suspenso</nombre>
+  </tematicas>
+  <tematicas id="9">
+    <nombre>Romance</nombre>
+  </tematicas>
+  <tematicas id="10">
+    <nombre>Drama</nombre>
+  </tematicas>
+  <tematicas id="11">
+    <nombre>Ficción literaria</nombre>
+  </tematicas>
 </tematicas>

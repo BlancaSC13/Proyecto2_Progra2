@@ -12,4 +12,44 @@
     <nombre>Fran</nombre>
     <apellido>Kafka</apellido>
   </autor>
+  <autor id="4">
+    <nombre>George</nombre>
+    <apellido>Orwell</apellido>
+  </autor>
+  <autor id="5">
+    <nombre>J.R.R</nombre>
+    <apellido>Tolken</apellido>
+  </autor>
+  <autor id="6">
+    <nombre>Dan</nombre>
+    <apellido>Brown</apellido>
+  </autor>
+  <autor id="7">
+    <nombre>Jane</nombre>
+    <apellido>Austen</apellido>
+  </autor>
+  <autor id="8">
+    <nombre>Harper</nombre>
+    <apellido>Lee</apellido>
+  </autor>
+  <autor id="9">
+    <nombre>F.Scott</nombre>
+    <apellido>Fitzgerald</apellido>
+  </autor>
+  <autor id="10">
+    <nombre>Ernest</nombre>
+    <apellido>Hemingway</apellido>
+  </autor>
+  <autor id="11">
+    <nombre>María Mercedes</nombre>
+    <apellido>Barcha</apellido>
+  </autor>
+  <autor id="12">
+    <nombre>Roberto</nombre>
+    <apellido>Bolaño</apellido>
+  </autor>
+  <autor id="13">
+    <nombre>Laura</nombre>
+    <apellido>Healy</apellido>
+  </autor>
 </autores>

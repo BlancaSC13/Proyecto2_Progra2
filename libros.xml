@@ -19,4 +19,24 @@
     <editorial>2</editorial>
     <tematica>Novela</tematica>
   </libro>
+  <libro id="3">
+    <titulo>El amor en los tiempos del cólera</titulo>
+    <isbn>9876</isbn>
+    <autores>
+      <idAutor>2</idAutor>
+      <idAutor>11</idAutor>
+    </autores>
+    <editorial>3</editorial>
+    <tematica>Realismo mágico</tematica>
+  </libro>
+  <libro id="4">
+    <titulo>Los detectives salvajes</titulo>
+    <isbn>5421</isbn>
+    <autores>
+      <idAutor>12</idAutor>
+      <idAutor>13</idAutor>
+    </autores>
+    <editorial>4</editorial>
+    <tematica>Ficción literaria</tematica>
+  </libro>
 </libros>

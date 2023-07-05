@@ -1,6 +1,5 @@
 package test;
 
-import cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.CursoXMLDAO;
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.LibrosXMLDAO;
 import cr.ac.ucr.paraiso.ie.progra2.webapp.session.models.*;
 import org.jdom2.DataConversionException;
