@@ -7,23 +7,13 @@
 <%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.EditorialesXMLDAO" %>
 <%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.AutorXMLDAO" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%
+    List<String> errores = (List<String>)request.getAttribute("check");
+%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ingresar un libro</title>
-    <% TematicasXMLDAO tematicasXmlDao = TematicasXMLDAO.abrirDocumento("tematicas.xml");
-        List<Tematica> tematicass = tematicasXmlDao.getTematicas(); %>
-
-    <%
-        EditorialesXMLDAO editorialesXMLDAO = EditorialesXMLDAO.abrirDocumento("editoriales.xml");
-        List<Editorial> editoriales = editorialesXMLDAO.getEditoriales(); %>
-
-    <%
-        AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
-        List<Autor> autoress = autorXMLDAO.getAutores(); %>
-
-
     <style>
         body {
             background-color: #f5f5dc;
@@ -70,94 +60,137 @@
             padding: 5px;
         }
     </style>
+    <title>Ingresar un libro</title>
+    <% TematicasXMLDAO tematicasXmlDao = TematicasXMLDAO.abrirDocumento("tematicas.xml");
+        List<Tematica> tematicass = tematicasXmlDao.getTematicas(); %>
+
+    <%
+        EditorialesXMLDAO editorialesXMLDAO = EditorialesXMLDAO.abrirDocumento("editoriales.xml");
+        List<Editorial> editoriales = editorialesXMLDAO.getEditoriales(); %>
+
+    <%
+        AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
+        List<Autor> autoress = autorXMLDAO.getAutores(); %>
+
 </head>
+
 <body>
-<div id="form-container">
-    <%--@declare id="tematicas"--%><h1>Ingresar un libro</h1>
-    <label for="id"><span>Id:</span><input type="text" id="id"/></label>
-    <label for="isbn"><span>ISBN:</span><input type="text" id="isbn"/></label>
-    <label for="titulo"><span>Título:</span><input type="text" id="titulo"/></label>
 
-        <% List<Editorial> editorialess = (List<Editorial>) request.getAttribute("editoriales"); %>
+<div id="container">
+<form action="/Proyecto2_Progra/ingresar" method="post">
 
 
-<%System.out.println("2" +editoriales);%>
-    <label for="editorial"><span>Editorial:</span>
-        <select id="editorial">
-            <%System.out.println("2" +editoriales);
-                for (Editorial editorial : editoriales) {%>
-            <option value="<%= editorial.getEditorialID() %>"><%= editorial.getNombreEditorial() %>
-            </option>
-            <% } %>
-        </select>
-    </label>
+    <h1>Ingresar un libro</h1>
 
-    <label for="tematicas">Temática:
-    <select style="width:300px" border="1px" name="tematicas">
-        <% for (Tematica tematica : tematicass) {%>
-        <option value="<%= tematica.getNombreTematica() %>"><%= tematica.getNombreTematica() %>
-        </option>
-        <% } %>
-    </select>
-    </label>
+    <div class="cont_forms">
+        <%
+            if(errores != null && errores.size()>0){
+        %>
+        <ul class="alert alert-danger">
+            <% for(String error : errores){%>
+            <li><%=error%></li>
+            <%}%>
+        </ul>
+        <%}%>
+    </div>
 
-    <label for="autores"><span>Autor/es:</span>
+        <div class="cont_forms">
+            <label for="identificacion"><span>Id:</span>
+            <input type="text" id="identificacion" name="identificacion" /></label>
+        </div>
 
-        <select id="autores">
-            <% for (Autor autor : autoress) {%>
-            <option value="<%= autor.getAutorID() %>"><%= autor.getNombreAutor() %>
-            </option>
-            <% } %>
-        </select>
-        <button id="btn-agregar-autor">Agregar Autor</button>
-        <input type="submit" value="Agregar Autor" class="btn btn-success">
-    </label>
-    <label for="estado"><span>Estado:</span>
-        <select id="estado">
-            <option value="estado1">Estado 1</option>
-            <option value="estado2">Estado 2</option>
-            <option value="estado3">Estado 3</option>
-        </select>
-    </label>
-    <input type="submit" value="Añadir Libro" class="btn btn-success">
+        <div  class="cont_forms">
+            <label for="isbn"><span>ISBN:</span>
+            <input type="text" placeholder="3654" name="isbn" id="isbn"/></label>
+        </div>
+
+        <div class="cont_forms">
+            <label for="titulo"> <span>  Titulo:</span>
+            <input type="text" name="titulo" placeholder="Mujercitas" id="titulo"> </label>
+        </div>
+
+        <div class="cont_forms">
+            <label for="editorial">Editorial:</label>
+                <select style="width:300px" border="1px" name="editorial" id="editorial">
+                    <%for (Editorial editorial : editoriales) {    %>
+                    <option value="<%= editorial.getEditorialID() %>"><%= editorial.getNombreEditorial() %>
+                    </option>
+                    <% } %>
+                </select>
+        </div>
+
+        <div  class="cont_forms">
+            <label for="tematicas">Temática: </label>
+                <select style="width:300px" border="1px" name="tematicas" id="tematicas">
+                    <% for (Tematica tematica : tematicass) {%>
+                    <option value="<%= tematica.getNombreTematica() %>"><%= tematica.getNombreTematica() %>
+                    </option>
+                    <% } %>
+                </select>
+        </div>
+
+        <div  class="cont_forms">
+            <label for="autores"><span>Autor/es:</span></label>
+
+                <select  style="width:300px" border="1px" name="autores" id="autores">
+                    <% for (Autor autor : autoress) {%>
+                    <option value="<%= autor.getAutorID() %>"><%= autor.getNombreAutor() %>
+                    </option>
+                    <% } %>
+                </select>
+        </div>
+
+    <table id="authors-table">
+        <thead>
+        <tr>
+            <th>idAutor</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Eliminar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1</td>
+            <td>Nombre Autor 1</td>
+            <td>Apellido Autor 1</td>
+            <td>
+                <button onclick="eliminarElemento(this)">Eliminar</button>
+            </td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Nombre Autor 2</td>
+            <td>Apellido Autor 2</td>
+            <td>
+                <button onclick="eliminarElemento(this)">Eliminar</button>
+            </td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Nombre Autor 3</td>
+            <td>Apellido Autor 3</td>
+            <td>
+                <button onclick="eliminarElemento(this)">Eliminar</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <script>
+        function eliminarElemento(boton) {
+            var fila = boton.parentNode.parentNode;
+            fila.parentNode.removeChild(fila);
+        }
+    </script>
+
+
+    <div class="cont_forms cont_forms_button">
+        <label></label>
+        <input id="button_submit" type="submit" value="Añadir Libro">
+    </div>
+
+</form>
 </div>
-
-<table id="authors-table">
-    <thead>
-    <tr>
-        <th>idAutor</th>
-        <th>Nombre</th>
-        <th>Apellido</th>
-        <th>Eliminar</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>1</td>
-        <td>Nombre Autor 1</td>
-        <td>Apellido Autor 1</td>
-        <td><button onclick="eliminarElemento(this)">Eliminar</button></td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>Nombre Autor 2</td>
-        <td>Apellido Autor 2</td>
-        <td><button onclick="eliminarElemento(this)">Eliminar</button></td>
-    </tr>
-    <tr>
-        <td>3</td>
-        <td>Nombre Autor 3</td>
-        <td>Apellido Autor 3</td>
-        <td><button onclick="eliminarElemento(this)">Eliminar</button></td>
-    </tr>
-    </tbody>
-</table>
-
-<script>
-    function eliminarElemento(boton) {
-        var fila = boton.parentNode.parentNode;
-        fila.parentNode.removeChild(fila);
-    }
-</script>
 </body>
 </html>

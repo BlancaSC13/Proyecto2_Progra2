@@ -56,7 +56,8 @@ public class LibrosXMLDAO {
     }
 
 
-    public void insertarLibro(Libro libro) throws IOException {
+    public void insertarLibro(Libro libro) throws IOException, JDOMException {
+        inicializarXML();
         Element eLibro = new Element("libro");
         eLibro.setAttribute("id", String.valueOf(libro.getLibroID()));
 
@@ -97,7 +98,6 @@ public class LibrosXMLDAO {
 
             if (eLibro.getAttribute("id").getIntValue() == libroID) {
                 eListaLibros.remove(i);
-                // iterator.remove();
                 break;
             }
             i++;
@@ -228,19 +228,18 @@ public class LibrosXMLDAO {
                 Autor autor = autorXMLDAO.buscar(Integer.parseInt(eIdAutor.getText()));
                 libroActual.getAutores().add(autor);
             }
-          /*  libroActual.setAutor(eLibro.getChildText("autor"));*/
            libroActual.setEditorial(editorialesXMLDAO.buscar(Integer.parseInt(eLibro.getChildText("editorial"))));
            libroActual.setTematica(tematicasXMLDAO.buscar(eLibro.getChildText("tematica")));
             libros.add(libroActual);
         }
         return libros;
     }
-    public boolean buscar(int idLibro) throws JDOMException, IOException {
-        List<Element> eListaLibros = raiz.getChildren("libro");
+    public boolean buscar(String idLibro) throws JDOMException, IOException {
+        List eListaLibros = raiz.getChildren("libro");
         inicializarXML();
-        for (Element eLibro : eListaLibros) {
-            int idBuscando = Integer.parseInt(eLibro.getChildText("id"));
-            if (idBuscando == idLibro) {
+        for (Object obj : eListaLibros) {
+            Element eLibro = (Element) obj;
+            if (eLibro.getAttribute("idAutor").getValue().equals(idLibro)) {
                 return true;
             }
         }
