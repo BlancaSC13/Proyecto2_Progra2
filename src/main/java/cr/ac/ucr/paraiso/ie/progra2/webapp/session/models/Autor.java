@@ -41,12 +41,16 @@ public class Autor {
         this.apellidoAutor = apellidoAutor;
     }
 
-    @Override
+/*    @Override
     public String toString() {
         return "Autor{" +
                 "autorID=" + autorID +
                 ", nombreAutor='" + nombreAutor + '\'' +
                 ", apellidoAutor='" + apellidoAutor + '\'' +
                 '}';
+    }*/
+    @Override
+    public String toString() {
+        return nombreAutor +" "+ apellidoAutor;
     }
 }
