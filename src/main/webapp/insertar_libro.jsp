@@ -6,6 +6,8 @@
 <%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.TematicasXMLDAO" %>
 <%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.EditorialesXMLDAO" %>
 <%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.AutorXMLDAO" %>
+<%@ page import="org.jdom2.JDOMException" %>
+<%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.LibrosXMLDAO" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%
     List<String> errores = (List<String>)request.getAttribute("check");
@@ -14,6 +16,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <title>Ingresar un libro</title>
     <style>
         body {
             background-color: #f5f5dc;
@@ -60,21 +63,19 @@
             padding: 5px;
         }
     </style>
-    <title>Ingresar un libro</title>
-    <% TematicasXMLDAO tematicasXmlDao = TematicasXMLDAO.abrirDocumento("tematicas.xml");
-        List<Tematica> tematicas = tematicasXmlDao.getTematicas(); %>
-
-    <%
-        EditorialesXMLDAO editorialesXMLDAO = EditorialesXMLDAO.abrirDocumento("editoriales.xml");
-        List<Editorial> editoriales = editorialesXMLDAO.getEditoriales(); %>
-
-    <%
-        AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
-        List<Autor> autores = autorXMLDAO.getAutores(); %>
-
 </head>
 
 <body>
+<% TematicasXMLDAO tematicasXmlDao = TematicasXMLDAO.abrirDocumento("tematicas.xml");
+    List<Tematica> tematicas = tematicasXmlDao.getTematicas(); %>
+
+<%
+    EditorialesXMLDAO editorialesXMLDAO = EditorialesXMLDAO.abrirDocumento("editoriales.xml");
+    List<Editorial> editoriales = editorialesXMLDAO.getEditoriales(); %>
+
+<%
+    AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
+    List<Autor> autores = autorXMLDAO.getAutores(); %>
 
 <div id="container">
 <form action="/Proyecto2_Progra/ingresar" method="post">
@@ -92,105 +93,115 @@
             <%}%>
         </ul>
         <%}%>
-    </div>
+    </div><br><br>
 
         <div class="cont_forms">
             <label for="identificacion"><span>Id:</span>
             <input type="text" id="identificacion" name="identificacion" /></label>
-        </div>
+        </div><br><br>
 
         <div  class="cont_forms">
             <label for="isbn"><span>ISBN:</span>
             <input type="text" placeholder="3654" name="isbn" id="isbn"/></label>
-        </div>
+        </div><br><br>
 
         <div class="cont_forms">
             <label for="titulo"> <span>  Titulo:</span>
             <input type="text" name="titulo" placeholder="Mujercitas" id="titulo"> </label>
-        </div>
+        </div><br><br>
 
         <div class="cont_forms">
             <label for="editorial">Editorial:</label>
-                <select style="width:300px" border="1px" name="editorial" id="editorial">
+                <select style="width:200px" border="1px" name="editorial" id="editorial">
                     <%for (Editorial editorial : editoriales) {    %>
                     <option value="<%= editorial.getEditorialID() %>"><%= editorial.getNombreEditorial() %>
                     </option>
                     <% } %>
                 </select>
-        </div>
+        </div><br><br>
 
         <div  class="cont_forms">
             <label for="tematicas">Temática: </label>
-                <select style="width:300px" border="1px" name="tematicas" id="tematicas">
+                <select style="width:200px" border="1px" name="tematicas" id="tematicas">
                     <% for (Tematica tematica : tematicas) {%>
                     <option value="<%= tematica.getNombreTematica() %>"><%= tematica.getNombreTematica() %>
                     </option>
                     <% } %>
                 </select>
-        </div>
+        </div><br><br>
 
         <div  class="cont_forms">
             <label for="autores"><span>Autor/es:</span></label>
 
-                <select  style="width:300px" border="1px" name="autores" id="autores">
+                <select  style="width:200px" border="1px" name="autores" id="autores">
                     <% for (Autor autor : autores) {%>
                     <option value="<%= autor.getAutorID() %>"><%= autor.getNombreAutor() + " " + autor.getApellidoAutor() %>
                     </option>
                     <% } %>
                 </select>
-        </div>
-
-    <table id="authors-table">
-        <thead>
-        <tr>
-            <th>idAutor</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Eliminar</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>1</td>
-            <td>Nombre Autor 1</td>
-            <td>Apellido Autor 1</td>
-            <td>
-                <button onclick="eliminarElemento(this)">Eliminar</button>
-            </td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Nombre Autor 2</td>
-            <td>Apellido Autor 2</td>
-            <td>
-                <button onclick="eliminarElemento(this)">Eliminar</button>
-            </td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>Nombre Autor 3</td>
-            <td>Apellido Autor 3</td>
-            <td>
-                <button onclick="eliminarElemento(this)">Eliminar</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <script>
-        function eliminarElemento(boton) {
-            var fila = boton.parentNode.parentNode;
-            fila.parentNode.removeChild(fila);
-        }
-    </script>
-
-
+        </div><br><br>
     <div class="cont_forms cont_forms_button">
         <label></label>
         <input id="button_submit" type="submit" value="Añadir Libro">
-    </div>
-
+    </div><br><br>
 </form>
-</div>
+</div><br><br>
+</body>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>ID Libro</th>
+        <th>ISBN</th>
+        <th>Título</th>
+        <th>Editorial</th>
+        <th>Tematica</th>
+        <th>Autores</th>
+    </tr>
+    </thead>
+    <% LibrosXMLDAO librosXmlDao;
+        List<Libro> libros;
+        try {
+            librosXmlDao = LibrosXMLDAO.abrirDocumento("libros.xml");
+            libros = librosXmlDao.getLibros();
+        } catch (JDOMException e) {
+            throw new RuntimeException(e);
+        }
+    %>
+
+    <% EditorialesXMLDAO editorialesXMLDAO2 = EditorialesXMLDAO.abrirDocumento("editoriales.xml");
+        List<Editorial> editoriales2 = editorialesXMLDAO2.getEditoriales();%>
+
+    <% AutorXMLDAO autorXMLDAO2;
+        try {
+            autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
+        } catch (JDOMException e) {
+            throw new RuntimeException(e);
+        }
+        List<Autor> autores2 = autorXMLDAO.getAutores();%>
+
+    <% TematicasXMLDAO tematicasXMLDAO = TematicasXMLDAO.abrirDocumento("tematicas.xml");
+        List<Tematica> tematicas2 = tematicasXMLDAO.getTematicas();%>
+
+    <tbody>
+
+    <%for (Libro libroActual : libros) { %>
+    <tr>
+        <td><%= libroActual.getLibroID() %>
+        </td>
+        <td><%= libroActual.getISBN() %>
+        </td>
+        <td><%= libroActual.getTitulo() %>
+        </td>
+        <td><%= libroActual.getEditorial().getNombreEditorial() %>
+        </td>
+        <td><%= libroActual.getTematica().getNombreTematica() %>
+        </td>
+        <td><%= libroActual.getAutores() %>
+        </td>
+    </tr>
+    <% }%>
+    </tbody>
+</table>
 </body>
 </html>

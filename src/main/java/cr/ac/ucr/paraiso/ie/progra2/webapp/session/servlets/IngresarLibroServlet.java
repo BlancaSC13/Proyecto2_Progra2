@@ -85,7 +85,7 @@ public class IngresarLibroServlet extends HttpServlet {
 
             List<String> check = new ArrayList<>();
 
-            //if (identificacion == null || identificacion.equals("")) check.add("El id del libro es requerido");
+            if (identificacion == null || identificacion.equals("")) check.add("El id del libro es requerido");
             if (titulo == null || titulo.equals("")) check.add("El título del libro es requerido");
             if (isbn == null || isbn.equals("")) check.add("El ISBN del libro es requerido");
 
