@@ -49,7 +49,6 @@
             <th>Editorial</th>
             <th>Tema</th>
             <th>Autores</th>
-            <th>Acción</th>
         </tr>
         </thead>
 
@@ -107,7 +106,6 @@
             <td><%= libroActual.getEditorial().getNombreEditorial() %></td>
             <td><%= libroActual.getTematica().getNombreTematica() %></td>
             <td><%= libroActual.getAutores() %></td>
-            <td><a href="/session-webapp/libros">M</a></td>
         </tr>
         <% } %>
         </tbody>

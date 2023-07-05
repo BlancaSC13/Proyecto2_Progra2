@@ -15,17 +15,38 @@
     <meta charset="UTF-8">
     <title>Modificar un libro</title>
     <style>
-        .container {
+        body {
             background-color: #f5f5dc;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 75vh;
+            height: 100vh;
             font-family: Arial, sans-serif;
         }
 
-        form {
-            width: 300px;
+        #form-container {
+            display: flex;
+            flex-direction: column;
+            margin-right: 50px;
+        }
+
+        #form-container label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        #form-container label span {
+            margin-right: 10px;
+        }
+
+        #form-container input[type="text"],
+        #form-container select {
+            width: 200px;
+        }
+
+        #form-container #btn-agregar-autor {
+            margin-top: 10px;
         }
 
         #authors-table {
@@ -38,7 +59,6 @@
             border: 1px solid black;
             padding: 5px;
         }
-
     </style>
 </head>
 <body>
@@ -55,17 +75,17 @@
         %>
         <div class="cont_forms">
             <label for="identificacion"><span>Id:</span>
-                <input type="text" id="identificacion" name="identificacion"/></label>
+                <input type="text" id="identificacion" name="identificacion"required></label>
         </div>
         <br><br>
 
         <label for="isbn">ISBN:</label>
-        <input type="text" id="isbn" name="isbn"><br><br>
+        <input type="text" id="isbn" name="isbn" required><br><br>
         <label for="titulo">Título:</label>
-        <input type="text" id="titulo" name="titulo"><br><br>
+        <input type="text" id="titulo" name="titulo" required><br><br>
 
         <label for="editorial">Editorial:
-            <select id="editorial" name="editorial">
+            <select id="editorial" name="editorial" required>
                 <% EditorialesXMLDAO editorialesXMLDAO;
                     List<Editorial> editorials;
                     try {
@@ -84,8 +104,8 @@
             <br><br>
         </label>
 
-        <label for="tematica">Editorial:
-            <select id="tematica" name="tematica">
+        <label for="tematica">Temática:
+            <select id="tematica" name="tematica" required>
                 <% TematicasXMLDAO tematicasXMLDAO2;
                     List<Tematica> tematicas2;
                     try {
