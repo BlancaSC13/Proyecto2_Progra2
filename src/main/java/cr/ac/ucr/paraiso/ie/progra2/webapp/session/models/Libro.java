@@ -17,6 +17,8 @@ public class Libro {
         autores = new ArrayList<>();
         editorial = new Editorial();
         tematica = new Tematica();
+        this.libroID = contador;
+         contador++;
     }
 
     public Libro(int ISBN, String titulo, List<Autor> autores, Editorial editorial, Tematica tematica) {

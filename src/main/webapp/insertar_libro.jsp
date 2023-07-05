@@ -62,7 +62,7 @@
     </style>
     <title>Ingresar un libro</title>
     <% TematicasXMLDAO tematicasXmlDao = TematicasXMLDAO.abrirDocumento("tematicas.xml");
-        List<Tematica> tematicass = tematicasXmlDao.getTematicas(); %>
+        List<Tematica> tematicas = tematicasXmlDao.getTematicas(); %>
 
     <%
         EditorialesXMLDAO editorialesXMLDAO = EditorialesXMLDAO.abrirDocumento("editoriales.xml");
@@ -70,7 +70,7 @@
 
     <%
         AutorXMLDAO autorXMLDAO = AutorXMLDAO.abrirDocumento("autores.xml");
-        List<Autor> autoress = autorXMLDAO.getAutores(); %>
+        List<Autor> autores = autorXMLDAO.getAutores(); %>
 
 </head>
 
@@ -122,7 +122,7 @@
         <div  class="cont_forms">
             <label for="tematicas">Temática: </label>
                 <select style="width:300px" border="1px" name="tematicas" id="tematicas">
-                    <% for (Tematica tematica : tematicass) {%>
+                    <% for (Tematica tematica : tematicas) {%>
                     <option value="<%= tematica.getNombreTematica() %>"><%= tematica.getNombreTematica() %>
                     </option>
                     <% } %>
@@ -133,8 +133,8 @@
             <label for="autores"><span>Autor/es:</span></label>
 
                 <select  style="width:300px" border="1px" name="autores" id="autores">
-                    <% for (Autor autor : autoress) {%>
-                    <option value="<%= autor.getAutorID() %>"><%= autor.getNombreAutor() %>
+                    <% for (Autor autor : autores) {%>
+                    <option value="<%= autor.getAutorID() %>"><%= autor.getNombreAutor() + autor.getApellidoAutor() %>
                     </option>
                     <% } %>
                 </select>
