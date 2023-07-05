@@ -65,11 +65,23 @@
                 List<Libro> libros = librosXmlDao.getLibros();
 
                 for (Libro libro : libros) {
+                    List<Autor> autores = libro.getAutores();
+
                     if (libro.getTitulo().contains(titulo) ||
                             libro.getAutores().contains(titulo) ||
                             libro.getTematica().getNombreTematica().contains(titulo) ||
                             libro.getEditorial().getNombreEditorial().contains(titulo)) {
                         librosFiltrados.add(libro);
+                    }
+
+                    // Buscar por autor
+                    for (Autor autor : autores) {
+                        if (autor.getNombreAutor().contains(titulo)) {
+                            librosFiltrados.add(libro);
+                        }
+                        if (autor.getApellidoAutor().contains(titulo)){
+                            librosFiltrados.add(libro);
+                        }
                     }
                 }
             }
