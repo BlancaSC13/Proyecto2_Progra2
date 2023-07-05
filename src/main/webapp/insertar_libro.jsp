@@ -10,7 +10,7 @@
 <%@ page import="cr.ac.ucr.paraiso.ie.progra2.webapp.session.data.LibrosXMLDAO" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%
-    List<String> errores = (List<String>)request.getAttribute("check");
+    List<String> errores = (List<String>) request.getAttribute("check");
 %>
 <!DOCTYPE html>
 <html lang="es">
@@ -78,74 +78,86 @@
     List<Autor> autores = autorXMLDAO.getAutores(); %>
 
 <div id="container">
-<form action="/Proyecto2_Progra/ingresar" method="post">
+    <form action="/Proyecto2_Progra/ingresar" method="post">
 
 
-    <h1>Ingresar un libro</h1>
+        <h1>Ingresar un libro</h1>
 
-    <div class="cont_forms">
-        <%
-            if(errores != null && errores.size()>0){
-        %>
-        <ul class="alert alert-danger">
-            <% for(String error : errores){%>
-            <li><%=error%></li>
+        <div class="cont_forms">
+            <%
+                if (errores != null && errores.size() > 0) {
+            %>
+            <ul class="alert alert-danger">
+                <% for (String error : errores) {%>
+                <li><%=error%>
+                </li>
+                <%}%>
+            </ul>
             <%}%>
-        </ul>
-        <%}%>
-    </div><br><br>
+        </div>
+        <br><br>
 
         <div class="cont_forms">
             <label for="identificacion"><span>Id:</span>
-            <input type="text" id="identificacion" name="identificacion" /></label>
-        </div><br><br>
+                <input type="text" id="identificacion" name="identificacion"/></label>
+        </div>
+        <br><br>
 
-        <div  class="cont_forms">
+        <div class="cont_forms">
             <label for="isbn"><span>ISBN:</span>
-            <input type="text" placeholder="3654" name="isbn" id="isbn"/></label>
-        </div><br><br>
+                <input type="text" placeholder="3654" name="isbn" id="isbn"/></label>
+        </div>
+        <br><br>
 
         <div class="cont_forms">
             <label for="titulo"> <span>  Titulo:</span>
-            <input type="text" name="titulo" placeholder="Mujercitas" id="titulo"> </label>
-        </div><br><br>
+                <input type="text" name="titulo" placeholder="Mujercitas" id="titulo"> </label>
+        </div>
+        <br><br>
 
         <div class="cont_forms">
             <label for="editorial">Editorial:</label>
-                <select style="width:200px" border="1px" name="editorial" id="editorial">
-                    <%for (Editorial editorial : editoriales) {    %>
-                    <option value="<%= editorial.getEditorialID() %>"><%= editorial.getNombreEditorial() %>
-                    </option>
-                    <% } %>
-                </select>
-        </div><br><br>
+            <select style="width:200px" border="1px" name="editorial" id="editorial">
+                <%for (Editorial editorial : editoriales) { %>
+                <option value="<%= editorial.getEditorialID() %>"><%= editorial.getNombreEditorial() %>
+                </option>
+                <% } %>
+            </select>
+        </div>
+        <br><br>
 
-        <div  class="cont_forms">
+        <div class="cont_forms">
             <label for="tematicas">Temática: </label>
-                <select style="width:200px" border="1px" name="tematicas" id="tematicas">
-                    <% for (Tematica tematica : tematicas) {%>
-                    <option value="<%= tematica.getNombreTematica() %>"><%= tematica.getNombreTematica() %>
-                    </option>
-                    <% } %>
-                </select>
-        </div><br><br>
+            <select style="width:200px" border="1px" name="tematicas" id="tematicas">
+                <% for (Tematica tematica : tematicas) {%>
+                <option value="<%= tematica.getNombreTematica() %>"><%= tematica.getNombreTematica() %>
+                </option>
+                <% } %>
+            </select>
+        </div>
+        <br><br>
 
-        <div  class="cont_forms">
+        <div class="cont_forms">
             <label for="autores"><span>Autor/es:</span></label>
 
-                <select  style="width:200px" border="1px" name="autores" id="autores">
-                    <% for (Autor autor : autores) {%>
-                    <option value="<%= autor.getAutorID() %>"><%= autor.getNombreAutor() + " " + autor.getApellidoAutor() %>
-                    </option>
-                    <% } %>
-                </select>
-        </div><br><br>
-    <div class="cont_forms cont_forms_button">
-        <label></label>
-        <input id="button_submit" type="submit" value="Añadir Libro">
-    </div><br><br>
-</form>
-</div><br><br>
+            <select style="width:200px" border="1px" name="autores" id="autores">
+                <% for (Autor autor : autores) {%>
+                <option value="<%= autor.getAutorID() %>"><%= autor.getNombreAutor() + " " + autor.getApellidoAutor() %>
+                </option>
+                <% } %>
+            </select>
+        </div>
+        <br><br>
+        <div class="cont_forms cont_forms_button">
+            <label></label>
+            <input id="button_submit" type="submit" value="Añadir Libro">
+        </div>
+        <br><br>
+    </form>
+    <button onclick="location.href='/Proyecto2_Progra'">Volver</button>
+</div>
+<br><br>
+
 </body>
 <body>
 <table>

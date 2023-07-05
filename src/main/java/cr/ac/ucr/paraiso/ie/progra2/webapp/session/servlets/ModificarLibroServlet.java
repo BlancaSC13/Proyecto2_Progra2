@@ -24,23 +24,27 @@ public class ModificarLibroServlet extends HttpServlet {
         EditorialesXMLDAO editorialesXMLDAO;
         resp.setContentType("text/html;charset=UTF-8");
         try {
-            librosXMLDAO = LibrosXMLDAO.abrirDocumento("libros.xml");
-            tematicasXMLDAO = TematicasXMLDAO.abrirDocumento("tematicas.xml");
-            editorialesXMLDAO = EditorialesXMLDAO.abrirDocumento("editoriales.xml");
-            int id = Integer.parseInt(req.getParameter("identificacion"));
-            Libro libro = librosXMLDAO.getLibros(id);
-            libro.setTitulo(req.getParameter("titulo"));
-            libro.setTematica(tematicasXMLDAO.buscar(req.getParameter("tematica")));
-            libro.setISBN(Integer.parseInt(req.getParameter("isbn")));
-            libro.setEditorial(editorialesXMLDAO.buscar(req.getParameter("editorial")));
-            librosXMLDAO.modificar(libro);
-            req.getRequestDispatcher("/buscar_libro.jsp").forward(req,resp);
-
+            librosXMLDAO=LibrosXMLDAO.abrirDocumento("libros.xml");
+            if (librosXMLDAO.buscar(Integer.parseInt(req.getParameter("identificacion")))) {
+                librosXMLDAO = LibrosXMLDAO.abrirDocumento("libros.xml");
+                tematicasXMLDAO = TematicasXMLDAO.abrirDocumento("tematicas.xml");
+                editorialesXMLDAO = EditorialesXMLDAO.abrirDocumento("editoriales.xml");
+                int id = Integer.parseInt(req.getParameter("identificacion"));
+                Libro libro = librosXMLDAO.getLibros(id);
+                libro.setTitulo(req.getParameter("titulo"));
+                libro.setTematica(tematicasXMLDAO.buscar(req.getParameter("tematica")));
+                libro.setISBN(Integer.parseInt(req.getParameter("isbn")));
+                libro.setEditorial(editorialesXMLDAO.buscar(req.getParameter("editorial")));
+                librosXMLDAO.modificar(libro);
+                req.getRequestDispatcher("/modificar_aceptado.html").forward(req, resp);
+            }else{
+                req.getRequestDispatcher("/modificar_denegado.html").forward(req, resp);
+            }
 
         } catch (JDOMException ex) {
             throw new RuntimeException(ex);
         }
-        req.getRequestDispatcher("/modificar_libro.jsp").forward(req,resp);
+
     }
 
     @Override
